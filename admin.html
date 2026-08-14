@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>AZUR — Admin</title>
+<meta name="theme-color" content="#12224E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF7F0; --cream-2:#F2EDE1; --card:#FFFDF8; --line:#E7DFCD;
+  --sage-soft:#EDF1E9; --sage-line:#D8E0D1; --sage-deep:#54664F;
+  --lapis:#24418A; --lapis-deep:#12224E; --azure:#4A7FD4;
+  --gold:#B98F4F; --ink:#242B39; --ink-soft:#5C6470; --danger:#A4423C;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Jost',system-ui,sans-serif;font-weight:300;background:#E9E4D8;color:var(--ink);-webkit-font-smoothing:antialiased}
+.frame{position:relative;max-width:480px;margin:0 auto;background:var(--cream);min-height:100dvh;box-shadow:0 0 60px rgba(36,43,57,.18);padding-bottom:80px}
+.topbar{display:flex;align-items:center;gap:12px;padding:18px 18px 4px}
+.back{flex:0 0 44px;width:44px;height:44px;border-radius:50%;background:var(--cream-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink);text-decoration:none;-webkit-tap-highlight-color:transparent}
+.brand{position:relative;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:24px;letter-spacing:.14em;text-indent:.14em;color:var(--ink)}
+.brand i{position:absolute;left:8%;right:-6%;top:55%;height:3.5px;transform:translateY(-50%);background:linear-gradient(90deg,#1B2F66,#3E6AC8,#24418A);border-radius:2px}
+.admintag{margin-left:auto;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--lapis);background:#EEF2FA;border:1px solid #C6D2EC;border-radius:999px;padding:6px 12px}
+h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:27px;text-align:center;margin-top:14px}
+.sub{text-align:center;font-size:12.5px;color:var(--ink-soft);letter-spacing:.08em;margin-top:4px}
+.tabs{display:flex;gap:6px;background:var(--cream-2);border:1px solid var(--line);border-radius:999px;padding:5px;margin:18px 20px 0}
+.tab{flex:1;min-height:42px;border:none;border-radius:999px;background:transparent;font-family:'Jost',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tab.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px rgba(36,43,57,.12);font-weight:500}
+.pane{display:none;padding:20px 20px 30px}
+.pane.on{display:block;animation:fadeUp .35s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.seg{display:flex;gap:6px;background:var(--cream-2);border:1px solid var(--line);border-radius:999px;padding:4px;margin-bottom:16px}
+.seg button{flex:1;min-height:40px;border:none;border-radius:999px;background:transparent;font-family:'Jost',sans-serif;font-size:12.5px;letter-spacing:.06em;color:var(--ink-soft);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.seg button.on{background:var(--card);color:var(--ink);font-weight:500;box-shadow:0 2px 8px rgba(36,43,57,.1)}
+.dayhead{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;margin:18px 0 8px;color:var(--ink)}
+.bk{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 14px;margin-top:10px}
+.bk .top{display:flex;align-items:center;gap:10px}
+.bk .time{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;color:var(--lapis);min-width:74px}
+.bk .who b{display:block;font-weight:500;font-size:15px}
+.bk .who small{display:block;font-size:12px;color:var(--ink-soft);margin-top:1px}
+.bk .code{margin-left:auto;font-size:10.5px;letter-spacing:.12em;color:var(--ink-soft);background:var(--cream-2);border:1px solid var(--line);border-radius:999px;padding:4px 9px;align-self:flex-start;white-space:nowrap}
+.bk .meta{font-size:12.5px;color:var(--ink-soft);margin-top:8px;line-height:1.55}
+.bk .meta a{color:var(--lapis);text-decoration:none}
+.bk .acts{display:flex;gap:8px;margin-top:12px}
+.abtn{flex:1;min-height:42px;border-radius:12px;border:1.5px solid var(--line);background:var(--cream);font-family:'Jost',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.abtn.warn{color:var(--danger);border-color:#E4C6C3}
+.abtn.confirm{background:#F7E9E7;color:var(--danger);border-color:#D8A29C;font-weight:500}
+.empty{text-align:center;color:var(--ink-soft);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:17px;padding:26px 10px}
+.rowline{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:10px}
+.rowline .dname{width:88px;font-size:13px;letter-spacing:.06em}
+.rowline select{flex:1;min-height:42px;border:1.5px solid var(--line);border-radius:10px;background:var(--cream);font-family:'Jost',sans-serif;font-size:14px;color:var(--ink);padding:0 8px}
+.rowline .closedtag{flex:1;text-align:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.switch{position:relative;width:46px;height:26px;flex:0 0 46px}
+.switch input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:2}
+.switch i{position:absolute;inset:0;background:#D8D2C2;border-radius:999px;transition:background .2s}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.switch input:checked + i{background:var(--sage-deep)}
+.switch input:checked + i::after{transform:translateX(20px)}
+.datebar{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 12px;scrollbar-width:none}
+.datebar::-webkit-scrollbar{display:none}
+.datechip{flex:0 0 auto;min-width:60px;min-height:66px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.datechip .dw{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+.datechip .dn{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:20px;line-height:1}
+.datechip.sel{border-color:var(--gold);background:#FDFAF2;box-shadow:0 0 0 1px var(--gold)}
+.datechip.closed{opacity:.4}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px;min-height:46px}
+.slot{min-height:46px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);font-family:'Jost',sans-serif;font-size:13.5px;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent;line-height:1.2}
+.slot small{display:block;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.slot.blocked{background:var(--lapis-deep);border-color:var(--lapis-deep);color:#D7E0F5}
+.slot.blocked small{color:#9FB0D8}
+.slot.booked{background:var(--cream-2);color:#A79F8E;cursor:default;pointer-events:none}
+.slot.sel{border-color:var(--gold);background:#F6EEDC;box-shadow:0 0 0 1px var(--gold);font-weight:500}
+.section-label{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--sage-deep);margin:20px 0 8px;text-align:center}
+.loading-note{text-align:center;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);padding:14px 0;grid-column:1/-1}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:50px;margin-top:16px;padding:12px 22px;border:none;border-radius:999px;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .18s,opacity .18s;-webkit-appearance:none;appearance:none}
+.btn:active{transform:scale(.97)}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.btn-gold{background:linear-gradient(135deg,#D9B87A,#BD8F45);color:#231A08}
+.btn-line{border:1.5px solid #C9B98F;background:transparent;color:var(--ink)}
+.btn-dark{background:var(--lapis-deep);color:#E8EDF9}
+.field{margin-top:14px}
+.field label{display:block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.field input{width:100%;min-height:48px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);padding:12px 15px;font-family:'Jost',sans-serif;font-size:16px;color:var(--ink);outline:none}
+.field input:focus{border-color:var(--azure)}
+.note{font-size:12.5px;color:var(--ink-soft);line-height:1.65;margin-top:14px}
+.filters{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.filters select{flex:1;min-height:44px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font-family:'Jost',sans-serif;font-size:13.5px;color:var(--ink);padding:0 10px}
+.chk{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);letter-spacing:.04em}
+.chk input{width:18px;height:18px;accent-color:var(--sage-deep)}
+/* gate */
+.gate{position:fixed;inset:0;z-index:100;background:linear-gradient(175deg,#0A1330,#221657 55%,#4E2264);display:flex;align-items:center;justify-content:center;padding:30px}
+.gate .card{width:min(100%,340px);background:var(--cream);border-radius:24px;padding:30px 26px;text-align:center}
+.gate h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:26px}
+.gate p{font-size:12.5px;color:var(--ink-soft);margin-top:4px;letter-spacing:.06em}
+.gate input{width:100%;min-height:50px;margin-top:12px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);padding:12px 16px;font-size:16px;font-family:'Jost',sans-serif;outline:none}
+.gate input:focus{border-color:var(--azure)}
+.gate .err{display:none;color:var(--danger);font-size:12.5px;margin-top:10px}
+.gate.bad .err{display:block}
+.gate.bad .card{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+/* move sheet */
+.scrim{position:fixed;inset:0;z-index:80;background:rgba(10,15,35,.5);opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim.show{opacity:1;pointer-events:auto}
+.sheet{position:fixed;z-index:81;left:50%;bottom:0;transform:translate(-50%,100%);width:min(100%,480px);max-height:86dvh;overflow-y:auto;background:var(--cream);border-radius:26px 26px 0 0;padding:16px 22px calc(28px + env(safe-area-inset-bottom));transition:transform .4s cubic-bezier(.22,.8,.32,1)}
+.sheet.show{transform:translate(-50%,0)}
+.sheet h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:23px;text-align:center;margin-top:6px}
+.sheet .sub2{text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:2px}
+.sheet-close{position:absolute;top:14px;right:16px;width:36px;height:36px;border:none;border-radius:50%;background:var(--cream-2);color:var(--ink-soft);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,80px);z-index:120;background:var(--ink);color:#F5F1E6;font-size:13.5px;letter-spacing:.04em;padding:12px 20px;border-radius:999px;opacity:0;transition:transform .35s,opacity .35s;pointer-events:none;max-width:90%;text-align:center}
+.toast.show{transform:translate(-50%,0);opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="topbar">
+    <a class="back" href="index.html" aria-label="Back to site">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+    </a>
+    <div class="brand">AZUR<i aria-hidden="true"></i></div>
+    <span class="admintag">Admin</span>
+  </div>
+  <h1>Studio desk</h1>
+  <p class="sub" id="statLine">&nbsp;</p>
+
+  <div class="tabs">
+    <button type="button" class="tab on" data-pane="bookings">Bookings</button>
+    <button type="button" class="tab" data-pane="avail">Availability</button>
+    <button type="button" class="tab" data-pane="settings">Settings</button>
+  </div>
+
+  <!-- BOOKINGS -->
+  <section class="pane on" id="pane-bookings">
+    <div class="filters">
+      <select id="filterLoc">
+        <option value="all">All locations</option>
+        <option value="holiday-beach">Holiday Beach</option>
+        <option value="mejdlaya">Mejdlaya</option>
+      </select>
+      <label class="chk"><input type="checkbox" id="showPast">Past</label>
+    </div>
+    <div id="bookingList"><p class="empty">Loading&hellip;</p></div>
+    <button type="button" class="btn btn-line" id="refreshBtn">Refresh</button>
+  </section>
+
+  <!-- AVAILABILITY -->
+  <section class="pane" id="pane-avail">
+    <div class="seg" id="availLocSeg">
+      <button type="button" class="on" data-loc="holiday-beach">Holiday Beach</button>
+      <button type="button" data-loc="mejdlaya">Mejdlaya</button>
+    </div>
+
+    <p class="section-label">Weekly hours</p>
+    <div id="hoursList"></div>
+
+    <p class="section-label">Block specific times</p>
+    <div class="datebar" id="blockDateBar"></div>
+    <div class="slots" id="blockGrid"></div>
+    <button type="button" class="btn btn-dark" id="blockDayBtn">Block entire day</button>
+    <p class="note" style="text-align:center">Tap a time to block or unblock it. Blocked times show as taken to clients.</p>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="pane" id="pane-settings">
+    <p class="section-label">Account</p>
+    <p class="note" style="text-align:center" id="whoami">&nbsp;</p>
+
+    <p class="section-label" style="margin-top:26px">Backup</p>
+    <button type="button" class="btn btn-line" id="exportBtn">Export bookings &amp; settings</button>
+    <p class="note">Everything lives safely in your online database. The export is an extra copy for your own records.</p>
+
+    <button type="button" class="btn btn-dark" id="lockBtn" style="margin-top:26px">Sign out</button>
+  </section>
+</div>
+
+<!-- MOVE SHEET -->
+<div class="scrim" id="moveScrim"></div>
+<div class="sheet" id="moveSheet" role="dialog" aria-modal="true">
+  <button type="button" class="sheet-close" id="moveClose" aria-label="Close">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+  </button>
+  <h3>Move appointment</h3>
+  <p class="sub2" id="moveWho"></p>
+  <p class="section-label">New day</p>
+  <div class="datebar" id="moveDateBar"></div>
+  <p class="section-label">New time</p>
+  <div class="slots" id="moveGrid"></div>
+  <button type="button" class="btn btn-gold" id="moveConfirm" disabled>Confirm new time</button>
+</div>
+
+<!-- GATE -->
+<div class="gate" id="gate">
+  <div class="card">
+    <div class="brand" style="display:inline-block">AZUR<i aria-hidden="true"></i></div>
+    <h2 style="margin-top:12px">Admin access</h2>
+    <p>Sign in with your admin account</p>
+    <input id="gateEmail" type="email" autocomplete="username" placeholder="Email" aria-label="Email">
+    <input id="gatePass" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password">
+    <p class="err" id="gateErr">Wrong email or password — try again.</p>
+    <button type="button" class="btn btn-gold" id="gateBtn">Sign in</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* AZUR booking store — Supabase edition.
+   Same job as the old localStorage store, but every read/write goes to
+   the shared online database, so all phones see the same availability. */
+(function (global) {
+  var SUPABASE_URL = 'https://swlqpcbnduzypfvrnbnd.supabase.co';
+  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bHFwY2JuZHV6eXBmdnJuYm5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjQ3MDYsImV4cCI6MjEwMjMwMDcwNn0.xBhyWOu3ybJ-whTMTZEiYToKGYnF1W4Lz3KjHEwRh4E';
+
+  var DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  var client = null;
+  var cachedSettings = null;
+
+  /* ---------- pure helpers (same as before) ---------- */
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function dateStr(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function todayStr() { return dateStr(new Date()); }
+  function addDays(base, n) { var d = new Date(base.getTime()); d.setDate(d.getDate() + n); return d; }
+  function parseDate(s) { var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function weekday(s) { return parseDate(s).getDay(); }
+  function toMin(hhmm) { var p = hhmm.split(':'); return (+p[0]) * 60 + (+p[1]); }
+  function toHHMM(min) { return pad(Math.floor(min / 60)) + ':' + pad(min % 60); }
+  function fmtDate(s) { var d = parseDate(s); return DAYS[d.getDay()].slice(0,3) + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate(); }
+  function fmtDateLong(s) { var d = parseDate(s); return DAYS[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate(); }
+  function fmtTime(hhmm) {
+    var m = toMin(hhmm), h = Math.floor(m / 60), mm = m % 60;
+    var ap = h >= 12 ? 'PM' : 'AM';
+    var h12 = h % 12; if (h12 === 0) h12 = 12;
+    return h12 + (mm ? ':' + pad(mm) : ':00') + ' ' + ap;
+  }
+
+  function isObj(x) { return x && typeof x === 'object' && !Array.isArray(x); }
+  function merge(base, over) {
+    if (!isObj(base)) return over === undefined ? base : over;
+    var out = {};
+    Object.keys(base).forEach(function (k) {
+      if (over && Object.prototype.hasOwnProperty.call(over, k)) {
+        if (isObj(base[k]) && isObj(over[k])) out[k] = merge(base[k], over[k]);
+        else out[k] = over[k];
+      } else out[k] = base[k];
+    });
+    if (isObj(over)) Object.keys(over).forEach(function (k) {
+      if (!Object.prototype.hasOwnProperty.call(out, k)) out[k] = over[k];
+    });
+    return out;
+  }
+
+  function defaultHours() {
+    var h = {};
+    for (var i = 0; i < 7; i++) h[String(i)] = { start: '10:00', end: '19:00' };
+    return h;
+  }
+  function defaultSettings() {
+    return {
+      locations: {
+        'holiday-beach': { name: 'Holiday Beach', area: 'Zouk Mosbeh', hours: defaultHours() },
+        'mejdlaya':      { name: 'Mejdlaya',      area: 'Zgharta',     hours: defaultHours() }
+      },
+      services: [
+        { id: 'holistic-massage', name: 'Holistic Massage', minutes: 60 },
+        { id: 'physiotherapy',    name: 'Physiotherapy',    minutes: 45 },
+        { id: 'thai-stretching',  name: 'Thai Stretching',  minutes: 45 },
+        { id: 'hot-stone',        name: 'Hot Stone Ritual', minutes: 75 },
+        { id: 'facial-care',      name: 'Facial Care',      minutes: 60 }
+      ],
+      blocked: {}
+    };
+  }
+
+  /* ---------- connection ---------- */
+  function init() {
+    client = global.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    return client.from('settings').select('data').eq('id', 1).single().then(function (res) {
+      if (res.error) throw res.error;
+      cachedSettings = merge(defaultSettings(), res.data.data || {});
+      return cachedSettings;
+    });
+  }
+  function settings() { return cachedSettings; }
+  function refreshSettings() {
+    return client.from('settings').select('data').eq('id', 1).single().then(function (res) {
+      if (res.error) throw res.error;
+      cachedSettings = merge(defaultSettings(), res.data.data || {});
+      return cachedSettings;
+    });
+  }
+  function pushSettings() {
+    return client.from('settings').update({ data: cachedSettings }).eq('id', 1).then(function (res) {
+      return { ok: !res.error, error: res.error };
+    });
+  }
+
+  /* ---------- availability ---------- */
+  function blockedList(locId, ds) {
+    var b = cachedSettings.blocked || {};
+    return (b[locId] && b[locId][ds]) ? b[locId][ds] : [];
+  }
+  function isDayBlocked(locId, ds) { return blockedList(locId, ds).indexOf('ALL') !== -1; }
+  function isOpen(locId, ds) {
+    var loc = cachedSettings.locations[locId];
+    if (!loc) return false;
+    if (!loc.hours[String(weekday(ds))]) return false;
+    if (isDayBlocked(locId, ds)) return false;
+    return true;
+  }
+
+  /* Fetch the set of taken times for one location + day (no names, no phones). */
+  function takenSet(locId, ds) {
+    return client.from('taken_slots').select('time').eq('location', locId).eq('date', ds)
+      .then(function (res) {
+        if (res.error) throw res.error;
+        var set = {};
+        (res.data || []).forEach(function (r) { set[String(r.time).slice(0,5)] = true; });
+        return set;
+      });
+  }
+
+  /* Compute slot list from cached settings + a takenSet. ignoreTime treats
+     one taken time as free (used when moving a booking to its own day). */
+  function slotsWith(locId, ds, taken, ignoreTime) {
+    var loc = cachedSettings.locations[locId];
+    if (!loc) return [];
+    var h = loc.hours[String(weekday(ds))];
+    if (!h) return [];
+    var out = [];
+    var now = new Date();
+    var isToday = ds === todayStr();
+    var nowMin = now.getHours() * 60 + now.getMinutes();
+    var blocked = blockedList(locId, ds);
+    var dayBlocked = blocked.indexOf('ALL') !== -1;
+    for (var m = toMin(h.start); m + 60 <= toMin(h.end); m += 60) {
+      var t = toHHMM(m);
+      var status = 'available';
+      if (parseDate(ds) < parseDate(todayStr())) status = 'past';
+      else if (isToday && m <= nowMin) status = 'past';
+      else if (dayBlocked || blocked.indexOf(t) !== -1) status = 'blocked';
+      else if (taken[t] && t !== ignoreTime) status = 'taken';
+      out.push({ time: t, status: status });
+    }
+    return out;
+  }
+
+  /* ---------- bookings ---------- */
+  function genCode() {
+    var chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+    var c = 'AZ-';
+    for (var i = 0; i < 4; i++) c += chars[Math.floor(Math.random() * chars.length)];
+    return c;
+  }
+
+  function createBooking(info) {
+    /* fresh pre-check right before inserting: catches slots blocked or
+       taken since the page rendered (the DB unique index is the final guard) */
+    function precheck() {
+      return Promise.all([refreshSettings(), takenSet(info.location, info.date)]).then(function (r) {
+        var slots = slotsWith(info.location, info.date, r[1]);
+        for (var i = 0; i < slots.length; i++) {
+          if (slots[i].time === info.time) return slots[i].status === 'available';
+        }
+        return false;
+      });
+    }
+    function attempt(n) {
+      var code = genCode();
+      return client.from('bookings').insert({
+        code: code,
+        location: info.location,
+        service_id: info.serviceId,
+        date: info.date,
+        time: info.time,
+        name: info.name,
+        phone: info.phone,
+        note: info.note || ''
+      }).then(function (res) {
+        if (!res.error) {
+          return { ok: true, booking: { code: code, location: info.location, serviceId: info.serviceId,
+                   date: info.date, time: info.time, name: info.name, phone: info.phone, note: info.note || '' } };
+        }
+        if (res.error.code === '23505') {
+          if (/bookings_one_per_slot/.test(res.error.message || '')) return { ok: false, reason: 'slot-unavailable' };
+          if (n < 3) return attempt(n + 1); /* rare booking-code collision — retry */
+        }
+        return { ok: false, reason: 'network', error: res.error };
+      });
+    }
+    return precheck().then(function (free) {
+      if (!free) return { ok: false, reason: 'slot-unavailable' };
+      return attempt(1);
+    });
+  }
+
+  function mapRow(r) {
+    return { code: r.code, location: r.location, serviceId: r.service_id,
+             date: String(r.date), time: String(r.time).slice(0,5),
+             name: r.name, phone: r.phone, note: r.note, status: r.status,
+             createdAt: r.created_at };
+  }
+
+  function listBookings() {
+    return client.from('bookings').select('*').order('date', { ascending: true }).order('time', { ascending: true })
+      .then(function (res) {
+        if (res.error) throw res.error;
+        return (res.data || []).map(mapRow);
+      });
+  }
+
+  function moveBooking(code, newDate, newTime) {
+    return client.from('bookings').update({ date: newDate, time: newTime }).eq('code', code).select()
+      .then(function (res) {
+        if (res.error) {
+          if (res.error.code === '23505') return { ok: false, reason: 'slot-unavailable' };
+          return { ok: false, reason: 'network', error: res.error };
+        }
+        if (!res.data || !res.data.length) return { ok: false, reason: 'not-found' };
+        return { ok: true, booking: mapRow(res.data[0]) };
+      });
+  }
+
+  function cancelBooking(code) {
+    return client.from('bookings').update({ status: 'cancelled' }).eq('code', code).select()
+      .then(function (res) {
+        if (res.error) return { ok: false, error: res.error };
+        return { ok: true };
+      });
+  }
+
+  /* ---------- blocked toggles (admin) ---------- */
+  function toggleBlock(locId, ds, timeOrAll) {
+    if (!cachedSettings.blocked) cachedSettings.blocked = {};
+    if (!cachedSettings.blocked[locId]) cachedSettings.blocked[locId] = {};
+    var list = cachedSettings.blocked[locId][ds] || [];
+    var i = list.indexOf(timeOrAll);
+    if (i === -1) list.push(timeOrAll); else list.splice(i, 1);
+    if (list.length) cachedSettings.blocked[locId][ds] = list;
+    else delete cachedSettings.blocked[locId][ds];
+    return pushSettings();
+  }
+
+  /* ---------- auth (admin) ---------- */
+  function login(email, password) {
+    return client.auth.signInWithPassword({ email: email, password: password })
+      .then(function (res) { return { ok: !res.error, error: res.error }; });
+  }
+  function logout() { return client.auth.signOut(); }
+  function session() {
+    return client.auth.getSession().then(function (res) {
+      return res.data ? res.data.session : null;
+    });
+  }
+
+  function serviceById(id) {
+    var list = (cachedSettings && cachedSettings.services) || [];
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+
+  global.AzurStore = {
+    init: init, settings: settings, refreshSettings: refreshSettings, pushSettings: pushSettings,
+    takenSet: takenSet, slotsWith: slotsWith, isOpen: isOpen, isDayBlocked: isDayBlocked,
+    createBooking: createBooking, listBookings: listBookings,
+    moveBooking: moveBooking, cancelBooking: cancelBooking,
+    toggleBlock: toggleBlock,
+    login: login, logout: logout, session: session,
+    serviceById: serviceById,
+    todayStr: todayStr, dateStr: dateStr, addDays: addDays,
+    fmtDate: fmtDate, fmtDateLong: fmtDateLong, fmtTime: fmtTime,
+    DAYS: DAYS
+  };
+})(window);
+
+</script>
+<script>
+(function(){
+  var S = window.AzurStore;
+  var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var bookings = [];
+  function $(id){ return document.getElementById(id); }
+
+  var toastTimer=null;
+  function toast(msg){
+    var t=$('toast'); t.textContent=msg; t.classList.add('show');
+    clearTimeout(toastTimer); toastTimer=setTimeout(function(){ t.classList.remove('show'); },2600);
+  }
+  function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+  /* ---------- BOOT + GATE ---------- */
+  var gate=$('gate');
+  function boot(){
+    S.init().then(function(){
+      return S.session();
+    }).then(function(sess){
+      if(sess){ gate.style.display='none'; afterLogin(sess); }
+      /* else: gate stays visible */
+    }).catch(function(){
+      toast('Can’t reach the database — check your internet and refresh.');
+    });
+  }
+  function tryLogin(){
+    var email=$('gateEmail').value.trim(), pass=$('gatePass').value;
+    if(!email||!pass) return;
+    $('gateBtn').disabled=true; $('gateBtn').textContent='Signing in…';
+    S.login(email, pass).then(function(res){
+      $('gateBtn').disabled=false; $('gateBtn').textContent='Sign in';
+      if(res.ok){
+        gate.style.display='none';
+        S.session().then(afterLogin);
+      } else {
+        gate.classList.remove('bad'); void gate.offsetWidth; gate.classList.add('bad');
+        $('gatePass').value='';
+      }
+    });
+  }
+  $('gateBtn').addEventListener('click',tryLogin);
+  $('gatePass').addEventListener('keydown',function(e){ if(e.key==='Enter') tryLogin(); });
+  function afterLogin(sess){
+    if(sess && sess.user) $('whoami').textContent = 'Signed in as ' + sess.user.email;
+    refreshAll();
+  }
+  boot();
+
+  /* ---------- TABS ---------- */
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click',function(){
+      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+      t.classList.add('on');
+      document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('on');});
+      $('pane-'+t.getAttribute('data-pane')).classList.add('on');
+    });
+  });
+
+  function statLine(){
+    var today=S.todayStr();
+    var upcoming=bookings.filter(function(b){return b.status==='confirmed'&&b.date>=today;}).length;
+    var todayCount=bookings.filter(function(b){return b.status==='confirmed'&&b.date===today;}).length;
+    $('statLine').textContent=upcoming+' upcoming · '+todayCount+' today';
+  }
+
+  /* ---------- BOOKINGS ---------- */
+  function bookingCard(b){
+    var loc=S.settings().locations[b.location];
+    var sv=S.serviceById(b.serviceId);
+    var el=document.createElement('div'); el.className='bk';
+    var cancelled=b.status==='cancelled';
+    el.innerHTML=
+      '<div class="top">'+
+        '<div class="time">'+S.fmtTime(b.time)+'</div>'+
+        '<div class="who"><b>'+esc(b.name)+(cancelled?' · cancelled':'')+'</b><small>'+(sv?sv.name:'')+' · '+(loc?loc.name:b.location)+'</small></div>'+
+        '<span class="code">'+b.code+'</span>'+
+      '</div>'+
+      '<div class="meta"><a href="tel:'+esc(b.phone)+'">'+esc(b.phone)+'</a>'+(b.note?' — '+esc(b.note):'')+'</div>'+
+      (cancelled?'':'<div class="acts"><button type="button" class="abtn mv">Move</button><button type="button" class="abtn warn cx">Cancel</button></div>');
+    if(!cancelled){
+      el.querySelector('.mv').addEventListener('click',function(){ openMove(b); });
+      var cx=el.querySelector('.cx');
+      cx.addEventListener('click',function(){
+        if(cx.classList.contains('confirm')){
+          S.cancelBooking(b.code).then(function(res){
+            if(res.ok){ toast('Booking '+b.code+' cancelled — slot is free again'); refreshAll(); }
+            else toast('Connection problem — try again.');
+          });
+        } else {
+          cx.classList.add('confirm'); cx.textContent='Tap again to cancel';
+          setTimeout(function(){ cx.classList.remove('confirm'); cx.textContent='Cancel'; },2600);
+        }
+      });
+    }
+    return el;
+  }
+
+  function renderBookings(){
+    var list=$('bookingList'); list.innerHTML='';
+    var today=S.todayStr();
+    var flt=$('filterLoc').value;
+    var showPast=$('showPast').checked;
+    var items=bookings.filter(function(b){
+      if(flt!=='all'&&b.location!==flt) return false;
+      if(b.status!=='confirmed'&&!showPast) return false;
+      if(!showPast&&b.date<today) return false;
+      return true;
+    });
+    if(!items.length){
+      list.innerHTML='<p class="empty">No bookings here yet.<br>New bookings appear from every phone, instantly.</p>';
+      return;
+    }
+    var lastDate=null;
+    items.forEach(function(b){
+      if(b.date!==lastDate){
+        lastDate=b.date;
+        var h=document.createElement('div'); h.className='dayhead';
+        h.textContent=(b.date===today?'Today — ':'')+S.fmtDateLong(b.date);
+        list.appendChild(h);
+      }
+      list.appendChild(bookingCard(b));
+    });
+  }
+  $('filterLoc').addEventListener('change',renderBookings);
+  $('showPast').addEventListener('change',renderBookings);
+  $('refreshBtn').addEventListener('click',function(){ refreshAll(); toast('Refreshed'); });
+
+  /* ---------- MOVE ---------- */
+  var moveState={bk:null,date:null,time:null};
+  var moveToken=0;
+  function openMove(b){
+    moveState={bk:b,date:b.date,time:null};
+    $('moveWho').textContent=b.name+' · now '+S.fmtDate(b.date)+' '+S.fmtTime(b.time);
+    renderMoveDates();
+    $('moveConfirm').disabled=true;
+    $('moveScrim').classList.add('show'); $('moveSheet').classList.add('show');
+  }
+  function closeMove(){ $('moveScrim').classList.remove('show'); $('moveSheet').classList.remove('show'); }
+  $('moveScrim').addEventListener('click',closeMove);
+  $('moveClose').addEventListener('click',closeMove);
+
+  function renderMoveDates(){
+    var b=moveState.bk;
+    var bar=$('moveDateBar'); bar.innerHTML='';
+    var today=new Date();
+    for(var i=0;i<14;i++){
+      var d=S.addDays(today,i); var ds=S.dateStr(d);
+      var open=S.isOpen(b.location,ds);
+      var chip=document.createElement('button'); chip.type='button';
+      chip.className='datechip'+(open?'':' closed')+(ds===moveState.date?' sel':'');
+      chip.innerHTML='<span class="dw">'+S.DAYS[d.getDay()].slice(0,3)+'</span><span class="dn">'+d.getDate()+'</span><span class="dw">'+MONTHS[d.getMonth()]+'</span>';
+      if(open){
+        (function(dsx,chipx){
+          chipx.addEventListener('click',function(){
+            moveState.date=dsx; moveState.time=null;
+            $('moveConfirm').disabled=true;
+            bar.querySelectorAll('.datechip').forEach(function(c){c.classList.remove('sel');});
+            chipx.classList.add('sel');
+            renderMoveGrid();
+          });
+        })(ds,chip);
+      }
+      bar.appendChild(chip);
+    }
+    renderMoveGrid();
+  }
+  function renderMoveGrid(){
+    var b=moveState.bk;
+    var grid=$('moveGrid'); grid.innerHTML='<p class="loading-note">Checking…</p>';
+    if(!moveState.date){ grid.innerHTML=''; return; }
+    var token=++moveToken;
+    Promise.all([S.refreshSettings(), S.takenSet(b.location,moveState.date)]).then(function(r){
+      var taken = r[1];
+      if(token!==moveToken) return;
+      grid.innerHTML='';
+      var ignore=(moveState.date===b.date)?b.time:null;
+      var slots=S.slotsWith(b.location,moveState.date,taken,ignore);
+      slots.forEach(function(s){
+        if(s.status==='past') return;
+        var el=document.createElement('button'); el.type='button';
+        var free=s.status==='available';
+        el.className='slot'+(free?'':' booked')+(moveState.time===s.time?' sel':'');
+        el.textContent=S.fmtTime(s.time);
+        if(free){
+          el.addEventListener('click',function(){
+            moveState.time=s.time;
+            grid.querySelectorAll('.slot').forEach(function(x){x.classList.remove('sel');});
+            el.classList.add('sel');
+            $('moveConfirm').disabled=false;
+          });
+        }
+        grid.appendChild(el);
+      });
+      if(!grid.children.length) grid.innerHTML='<p class="empty" style="grid-column:1/-1">No open times this day.</p>';
+    }).catch(function(){
+      if(token!==moveToken) return;
+      grid.innerHTML='<p class="empty" style="grid-column:1/-1">Connection problem — tap the day again.</p>';
+    });
+  }
+  $('moveConfirm').addEventListener('click',function(){
+    S.moveBooking(moveState.bk.code,moveState.date,moveState.time).then(function(res){
+      if(res.ok){ toast('Moved to '+S.fmtDate(moveState.date)+' at '+S.fmtTime(moveState.time)); closeMove(); refreshAll(); }
+      else if(res.reason==='slot-unavailable') toast('That time is no longer free — pick another.');
+      else toast('Connection problem — try again.');
+    });
+  });
+
+  /* ---------- AVAILABILITY ---------- */
+  var availLoc='holiday-beach';
+  var blockDate=S.todayStr();
+  var blockToken=0;
+  document.querySelectorAll('#availLocSeg button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#availLocSeg button').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      availLoc=b.getAttribute('data-loc');
+      renderAvail();
+    });
+  });
+
+  function timeOptions(sel){
+    var out='';
+    for(var h=7;h<=22;h++){
+      var t=(h<10?'0':'')+h+':00';
+      out+='<option value="'+t+'"'+(t===sel?' selected':'')+'>'+S.fmtTime(t)+'</option>';
+    }
+    return out;
+  }
+
+  function renderHours(){
+    var wrap=$('hoursList'); wrap.innerHTML='';
+    var loc=S.settings().locations[availLoc];
+    var order=[1,2,3,4,5,6,0];
+    order.forEach(function(dow){
+      var h=loc.hours[String(dow)];
+      var row=document.createElement('div'); row.className='rowline';
+      var open=!!h;
+      row.innerHTML='<span class="dname">'+S.DAYS[dow]+'</span>'+
+        '<label class="switch"><input type="checkbox" '+(open?'checked':'')+' aria-label="Open on '+S.DAYS[dow]+'"><i></i></label>'+
+        (open
+          ? '<select class="hstart" aria-label="Opens">'+timeOptions(h.start)+'</select><select class="hend" aria-label="Closes">'+timeOptions(h.end)+'</select>'
+          : '<span class="closedtag">Closed</span>');
+      var toggle=row.querySelector('.switch input');
+      toggle.addEventListener('change',function(){
+        S.settings().locations[availLoc].hours[String(dow)]=toggle.checked?{start:'10:00',end:'19:00'}:null;
+        S.pushSettings().then(function(res){
+          if(res.ok){ renderHours(); renderBlock(); toast(S.DAYS[dow]+(toggle.checked?' opened':' closed')); }
+          else { toast('Could not save — check connection'); }
+        });
+      });
+      if(open){
+        row.querySelector('.hstart').addEventListener('change',function(e){ saveHours(dow,'start',e.target.value); });
+        row.querySelector('.hend').addEventListener('change',function(e){ saveHours(dow,'end',e.target.value); });
+      }
+      wrap.appendChild(row);
+    });
+  }
+  function saveHours(dow,field,val){
+    var h=S.settings().locations[availLoc].hours[String(dow)];
+    if(!h) return;
+    var old=h[field];
+    h[field]=val;
+    if(h.start>=h.end){ h[field]=old; toast('Closing time must be after opening'); renderHours(); return; }
+    S.pushSettings().then(function(res){
+      if(res.ok){ toast('Hours updated'); renderBlock(); }
+      else toast('Could not save — check connection');
+    });
+  }
+
+  function renderBlockDates(){
+    var bar=$('blockDateBar'); bar.innerHTML='';
+    var today=new Date();
+    for(var i=0;i<14;i++){
+      var d=S.addDays(today,i); var ds=S.dateStr(d);
+      var chip=document.createElement('button'); chip.type='button';
+      chip.className='datechip'+(ds===blockDate?' sel':'');
+      chip.innerHTML='<span class="dw">'+S.DAYS[d.getDay()].slice(0,3)+'</span><span class="dn">'+d.getDate()+'</span><span class="dw">'+MONTHS[d.getMonth()]+'</span>';
+      (function(dsx,chipx){
+        chipx.addEventListener('click',function(){
+          blockDate=dsx;
+          bar.querySelectorAll('.datechip').forEach(function(c){c.classList.remove('sel');});
+          chipx.classList.add('sel');
+          renderBlock();
+        });
+      })(ds,chip);
+      bar.appendChild(chip);
+    }
+  }
+
+  function renderBlock(){
+    var grid=$('blockGrid'); grid.innerHTML='<p class="loading-note">Checking…</p>';
+    var dayBlocked=S.isDayBlocked(availLoc,blockDate);
+    $('blockDayBtn').textContent=dayBlocked?'Unblock this day':'Block entire day';
+    var token=++blockToken;
+    Promise.all([S.refreshSettings(), S.takenSet(availLoc,blockDate)]).then(function(r){
+      var taken = r[1];
+      var dayBlocked2=S.isDayBlocked(availLoc,blockDate);
+      $('blockDayBtn').textContent=dayBlocked2?'Unblock this day':'Block entire day';
+      if(token!==blockToken) return;
+      grid.innerHTML='';
+      var slots=S.slotsWith(availLoc,blockDate,taken);
+      if(!slots.length){
+        grid.innerHTML='<p class="empty" style="grid-column:1/-1">Closed this weekday — open it in weekly hours above.</p>';
+        return;
+      }
+      slots.forEach(function(s){
+        var el=document.createElement('button'); el.type='button';
+        var cls='slot'; var label='Open';
+        if(s.status==='taken'){ cls+=' booked'; label='Booked'; }
+        else if(s.status==='blocked'){ cls+=' blocked'; label='Blocked'; }
+        else if(s.status==='past'){ cls+=' booked'; label='Past'; }
+        el.className=cls;
+        el.innerHTML=S.fmtTime(s.time)+'<small>'+label+'</small>';
+        if((s.status==='blocked'&&!dayBlocked)||s.status==='available'){
+          el.addEventListener('click',function(){
+            S.toggleBlock(availLoc,blockDate,s.time).then(function(res){
+              if(res.ok) renderBlock();
+              else toast('Could not save — check connection');
+            });
+          });
+        }
+        grid.appendChild(el);
+      });
+    }).catch(function(){
+      if(token!==blockToken) return;
+      grid.innerHTML='<p class="empty" style="grid-column:1/-1">Connection problem — tap the day again.</p>';
+    });
+  }
+  $('blockDayBtn').addEventListener('click',function(){
+    S.toggleBlock(availLoc,blockDate,'ALL').then(function(res){
+      if(res.ok){ renderBlock(); toast(S.isDayBlocked(availLoc,blockDate)?'Day blocked':'Day reopened'); }
+      else toast('Could not save — check connection');
+    });
+  });
+
+  function renderAvail(){ renderHours(); renderBlockDates(); renderBlock(); }
+
+  /* ---------- SETTINGS ---------- */
+  $('exportBtn').addEventListener('click',function(){
+    var payload={ settings:S.settings(), bookings:bookings, exportedAt:new Date().toISOString() };
+    var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='azur-backup-'+S.todayStr()+'.json';
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },400);
+    toast('Backup downloaded');
+  });
+  $('lockBtn').addEventListener('click',function(){
+    S.logout().then(function(){
+      gate.style.display='flex'; gate.classList.remove('bad');
+      $('gatePass').value='';
+    });
+  });
+
+  function refreshAll(){
+    S.refreshSettings().then(function(){
+      return S.listBookings();
+    }).then(function(list){
+      bookings=list;
+      statLine();
+      renderBookings();
+      renderAvail();
+    }).catch(function(){
+      toast('Could not load bookings — check connection');
+    });
+  }
+})();
+</script>
+</body>
+</html>
