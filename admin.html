@@ -1,0 +1,2299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>AZUR — Admin</title>
+<meta name="theme-color" content="#12224E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FAF7F0; --cream-2:#F2EDE1; --card:#FFFDF8; --line:#E7DFCD;
+  --sage-soft:#EDF1E9; --sage-line:#D8E0D1; --sage-deep:#54664F;
+  --lapis:#24418A; --lapis-deep:#12224E; --azure:#4A7FD4;
+  --gold:#B98F4F; --ink:#242B39; --ink-soft:#5C6470; --danger:#A4423C;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Jost',system-ui,sans-serif;font-weight:300;background:#E9E4D8;color:var(--ink);-webkit-font-smoothing:antialiased}
+.frame{position:relative;max-width:480px;margin:0 auto;background:var(--cream);min-height:100dvh;box-shadow:0 0 60px rgba(36,43,57,.18);padding-bottom:80px}
+.topbar{display:flex;align-items:center;gap:12px;padding:18px 18px 4px}
+.back{flex:0 0 44px;width:44px;height:44px;border-radius:50%;background:var(--cream-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink);text-decoration:none;-webkit-tap-highlight-color:transparent}
+.brand{position:relative;font-family:'Cormorant Garamond',serif;font-weight:500;font-size:24px;letter-spacing:.14em;text-indent:.14em;color:var(--ink)}
+.brand i{position:absolute;left:8%;right:-6%;top:55%;height:3.5px;transform:translateY(-50%);background:linear-gradient(90deg,#1B2F66,#3E6AC8,#24418A);border-radius:2px}
+.admintag{margin-left:auto;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--lapis);background:#EEF2FA;border:1px solid #C6D2EC;border-radius:999px;padding:6px 12px}
+h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:27px;text-align:center;margin-top:14px}
+.sub{text-align:center;font-size:12.5px;color:var(--ink-soft);letter-spacing:.08em;margin-top:4px}
+.tabs{display:flex;gap:6px;background:var(--cream-2);border:1px solid var(--line);border-radius:999px;padding:5px;margin:18px 20px 0}
+.tab{flex:1;min-height:42px;padding:0 2px;border:none;border-radius:999px;background:transparent;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);cursor:pointer;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+.tab.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px rgba(36,43,57,.12);font-weight:500}
+.pane{display:none;padding:20px 20px 30px}
+.pane.on{display:block;animation:fadeUp .35s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.seg{display:flex;flex-wrap:wrap;gap:6px;background:var(--cream-2);border:1px solid var(--line);border-radius:22px;padding:4px;margin-bottom:16px}
+.seg button{flex:1 1 auto;min-width:31%;min-height:40px;border:none;border-radius:999px;background:transparent;font-family:'Jost',sans-serif;font-size:12.5px;letter-spacing:.06em;color:var(--ink-soft);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.seg button.on{background:var(--card);color:var(--ink);font-weight:500;box-shadow:0 2px 8px rgba(36,43,57,.1)}
+.seg .seglabel{flex:1 1 100%;text-align:center;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);padding:6px 0 2px}
+.dayhead{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;margin:18px 0 8px;color:var(--ink)}
+.bk{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 14px;margin-top:10px}
+.bk .top{display:flex;align-items:center;gap:10px}
+.bk .time{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;color:var(--lapis);min-width:74px}
+.bk .who b{display:block;font-weight:500;font-size:15px}
+.bk .who small{display:block;font-size:12px;color:var(--ink-soft);margin-top:1px}
+.bk .code{margin-left:auto;font-size:10.5px;letter-spacing:.12em;color:var(--ink-soft);background:var(--cream-2);border:1px solid var(--line);border-radius:999px;padding:4px 9px;align-self:flex-start;white-space:nowrap}
+.bk .meta{font-size:12.5px;color:var(--ink-soft);margin-top:8px;line-height:1.55}
+.bk .meta a{color:var(--lapis);text-decoration:none}
+.bk .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.abtn{display:flex;align-items:center;justify-content:center;gap:5px;min-height:42px;border-radius:12px;border:1.5px solid var(--line);background:var(--cream);font-family:'Jost',sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);cursor:pointer;text-decoration:none;-webkit-tap-highlight-color:transparent}
+.abtn.warn{color:var(--danger);border-color:#E4C6C3}
+.abtn.confirm{background:#F7E9E7;color:var(--danger);border-color:#D8A29C;font-weight:500}
+.abtn.ok{color:var(--sage-deep);border-color:var(--sage-line)}
+.abtn.ok:active{background:var(--sage-soft)}
+.abtn.wa{color:#2F7D5A;border-color:#BFDDCB;background:#F2F9F5}
+.abtn.wa:active{background:#E6F3EC}
+/* settings: therapist & ritual editors */
+.prow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:10px;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.prow:active{transform:scale(.985)}
+.prow .pimg{flex:0 0 44px;width:44px;height:44px;border-radius:50%;overflow:hidden;border:1.5px solid var(--sage-line);background:var(--sage-soft)}
+.prow .pimg img{width:100%;height:100%;object-fit:cover;display:block}
+.prow .ptxt b{display:block;font-weight:500;font-size:14.5px;color:var(--ink)}
+.prow .ptxt small{display:block;font-size:11.5px;color:var(--ink-soft);margin-top:1px;letter-spacing:.04em}
+.prow .pmeta{margin-left:auto;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap}
+.prow .chev{flex:0 0 auto;color:var(--ink-soft)}
+.fld{margin-top:14px;text-align:left}
+.fld label{display:block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.fld input,.fld textarea,.fld select{width:100%;min-height:48px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);padding:12px 14px;font-family:'Jost',sans-serif;font-size:16px;font-weight:300;color:var(--ink);outline:none}
+.fld textarea{min-height:84px;resize:vertical}
+.fld input:focus,.fld textarea:focus,.fld select:focus{border-color:var(--azure)}
+.photo-edit{display:flex;align-items:center;gap:14px;margin-top:14px}
+.photo-edit .pimg{flex:0 0 72px;width:72px;height:72px;border-radius:50%;overflow:hidden;border:2px solid var(--sage-line);background:var(--sage-soft)}
+.photo-edit .pimg img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-edit .abtn{flex:1}
+.btn.warn-line{border:1.5px solid #E4C6C3;color:var(--danger);background:transparent}
+.btn.warn-line.confirm{background:#F7E9E7;border-color:#D8A29C;font-weight:500}
+.addbtn{margin-top:12px;min-height:48px}
+.empty{text-align:center;color:var(--ink-soft);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:17px;padding:26px 10px}
+.rowline{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:10px}
+.rowline .dname{width:88px;font-size:13px;letter-spacing:.06em}
+.rowline select{flex:1;min-height:42px;border:1.5px solid var(--line);border-radius:10px;background:var(--cream);font-family:'Jost',sans-serif;font-size:14px;color:var(--ink);padding:0 8px}
+.rowline .closedtag{flex:1;text-align:center;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.rowline .alldaytag{flex:1;min-height:42px;display:flex;align-items:center;justify-content:center;border:1px solid var(--sage-line);border-radius:999px;background:var(--sage-soft);font-family:'Jost',sans-serif;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage-deep);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.rowline .alldaytag:active{background:#E3EADD}
+/* usual shift + per-date schedule */
+.shiftcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--gold);border-radius:16px;padding:15px 16px;font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.shiftcard:active{transform:scale(.99)}
+.shiftcard .stxt b{display:block;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:20px;color:var(--ink)}
+.shiftcard .stxt small{display:block;font-size:11.5px;color:var(--ink-soft);margin-top:2px;letter-spacing:.04em}
+.shiftcard .chev{margin-left:auto;color:var(--ink-soft)}
+.dayrow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:11px 13px;margin-top:8px;font-family:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.dayrow:active{transform:scale(.99)}
+.dayrow.custom{border-color:var(--azure);background:#F7FAFF}
+.dayrow.shut{background:var(--cream-2)}
+.dayrow .dlabel{flex:0 0 92px;font-size:13px;color:var(--ink);letter-spacing:.03em}
+.dayrow .dlabel i{display:block;font-style:normal;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-top:1px}
+.dayrow .dhours{font-size:13.5px;color:var(--ink);font-weight:400}
+.dayrow.shut .dhours{color:var(--ink-soft);font-style:italic}
+.dayrow .dtag{margin-left:auto;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap}
+.dayrow.custom .dtag{color:var(--azure)}
+.shiftrow{display:flex;align-items:center;gap:10px;margin-top:14px}
+.shiftrow select{flex:1;min-height:50px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);padding:12px 10px;font-family:'Jost',sans-serif;font-size:15px;color:var(--ink);outline:none}
+.shiftrow select:focus{border-color:var(--azure)}
+.shiftrow .arrow{flex:0 0 auto;color:var(--ink-soft)}
+.shiftpreview{text-align:center;font-size:12.5px;color:var(--sage-deep);background:var(--sage-soft);border:1px solid var(--sage-line);border-radius:12px;padding:10px;margin-top:14px;line-height:1.5}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.presets button{flex:1 1 46%;min-height:40px;border:1.5px solid var(--line);border-radius:999px;background:var(--cream);font-family:'Jost',sans-serif;font-size:11.5px;letter-spacing:.06em;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.presets button:active{background:var(--cream-2)}
+/* ---------- calendar ---------- */
+.weeknav{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.wbtn{flex:0 0 42px;width:42px;height:42px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.wbtn:active{background:var(--cream-2)}
+.wlabel{flex:1;text-align:center}
+.wlabel b{display:block;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:19px;color:var(--ink)}
+.wlabel small{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:2px}
+.chipbtn{flex:0 0 auto;min-height:44px;padding:0 14px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font-family:'Jost',sans-serif;font-size:12px;letter-spacing:.06em;color:var(--ink);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.chipbtn:active{background:var(--cream-2)}
+.calwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:14px;background:var(--card);scrollbar-width:thin}
+.calgrid{display:grid;grid-template-columns:46px repeat(7,minmax(96px,1fr));min-width:720px}
+.calgrid .ch{position:sticky;top:0;z-index:2;background:var(--cream-2);border-bottom:1px solid var(--line);padding:8px 4px;text-align:center}
+.calgrid .ch b{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.calgrid .ch i{display:block;font-style:normal;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:17px;color:var(--ink);line-height:1.1}
+.calgrid .ch.istoday{background:#F6EEDC}
+.calgrid .ch.istoday i{color:var(--gold)}
+.calgrid .ch.corner{position:sticky;left:0;z-index:3}
+.calgrid .th{position:sticky;left:0;z-index:1;background:var(--cream-2);border-right:1px solid var(--line);border-bottom:1px solid #EFE9DA;font-size:9.5px;letter-spacing:.04em;color:var(--ink-soft);display:flex;align-items:flex-start;justify-content:center;padding:4px 2px;min-height:44px}
+.calgrid .cell{border-right:1px solid #EFE9DA;border-bottom:1px solid #EFE9DA;min-height:44px;padding:3px}
+.calgrid .cell.off{background:repeating-linear-gradient(135deg,#FBF8F1,#FBF8F1 5px,#F4EFE3 5px,#F4EFE3 10px)}
+.ev{display:block;width:100%;height:100%;min-height:38px;text-align:left;border:none;border-radius:8px;background:linear-gradient(135deg,#E7D4AC,#D9BE86);color:#2B2410;padding:4px 6px;font-family:'Jost',sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent;overflow:hidden}
+.ev:active{transform:scale(.97)}
+.ev b{display:block;font-size:11.5px;font-weight:500;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ev small{display:block;font-size:9.5px;color:#5B4A22;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ev.done{background:var(--sage-soft);border:1px solid var(--sage-line);color:var(--sage-deep)}
+.ev.done small{color:#6A7A64}
+.calempty{padding:30px 16px;text-align:center;color:var(--ink-soft);font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic}
+/* printable week sheet — hidden on screen, the only thing shown when printing */
+#printArea{display:none}
+@media print{
+  @page{size:A4 landscape;margin:10mm}
+  body{background:#fff}
+  .frame{display:none!important}
+  .scrim,.sheet,.gate,.toast{display:none!important}
+  #printArea{display:block;font-family:'Jost',sans-serif;color:#000}
+  #printArea h2{font-family:'Cormorant Garamond',serif;font-size:20pt;margin-bottom:2mm}
+  #printArea .psub{font-size:9pt;color:#444;margin-bottom:4mm}
+  #printArea table{width:100%;border-collapse:collapse;table-layout:fixed}
+  #printArea th,#printArea td{border:0.4pt solid #999;padding:2mm 1.5mm;font-size:7.5pt;vertical-align:top;word-wrap:break-word}
+  #printArea th{background:#EFEFEF;font-size:8pt}
+  #printArea td.ptime{background:#F7F7F7;font-size:7pt;text-align:center;width:14mm}
+  #printArea .pev{font-weight:500}
+  #printArea .pev span{display:block;font-weight:400;color:#333;font-size:7pt}
+}
+.switch{position:relative;width:46px;height:26px;flex:0 0 46px}
+.switch input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:2}
+.switch i{position:absolute;inset:0;background:#D8D2C2;border-radius:999px;transition:background .2s}
+.switch i::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.switch input:checked + i{background:var(--sage-deep)}
+.switch input:checked + i::after{transform:translateX(20px)}
+.datebar{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 12px;scrollbar-width:none}
+.datebar::-webkit-scrollbar{display:none}
+.datechip{flex:0 0 auto;min-width:60px;min-height:66px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
+.datechip .dw{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+.datechip .dn{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:20px;line-height:1}
+.datechip.sel{border-color:var(--gold);background:#FDFAF2;box-shadow:0 0 0 1px var(--gold)}
+.datechip.closed{opacity:.4}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px;min-height:46px}
+.slot{min-height:46px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);font-family:'Jost',sans-serif;font-size:13.5px;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent;line-height:1.2}
+.slot small{display:block;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft)}
+.slot.blocked{background:var(--lapis-deep);border-color:var(--lapis-deep);color:#D7E0F5}
+.slot.blocked small{color:#9FB0D8}
+.slot.booked{background:var(--cream-2);color:#A79F8E;cursor:default;pointer-events:none}
+.slot.sel{border-color:var(--gold);background:#F6EEDC;box-shadow:0 0 0 1px var(--gold);font-weight:500}
+.section-label{font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--sage-deep);margin:20px 0 8px;text-align:center}
+.loading-note{text-align:center;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);padding:14px 0;grid-column:1/-1}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:50px;margin-top:16px;padding:12px 22px;border:none;border-radius:999px;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .18s,opacity .18s;-webkit-appearance:none;appearance:none}
+.btn:active{transform:scale(.97)}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.btn-gold{background:linear-gradient(135deg,#D9B87A,#BD8F45);color:#231A08}
+.btn-line{border:1.5px solid #C9B98F;background:transparent;color:var(--ink)}
+.btn-dark{background:var(--lapis-deep);color:#E8EDF9}
+.field{margin-top:14px}
+.field label{display:block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px}
+.field input{width:100%;min-height:48px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);padding:12px 15px;font-family:'Jost',sans-serif;font-size:16px;color:var(--ink);outline:none}
+.field input:focus{border-color:var(--azure)}
+.note{font-size:12.5px;color:var(--ink-soft);line-height:1.65;margin-top:14px}
+.filters{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.filters select{flex:1;min-height:44px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);font-family:'Jost',sans-serif;font-size:13.5px;color:var(--ink);padding:0 10px}
+.chk{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-soft);letter-spacing:.04em}
+.chk input{width:18px;height:18px;accent-color:var(--sage-deep)}
+/* gate */
+.gate{position:fixed;inset:0;z-index:100;background:linear-gradient(175deg,#0A1330,#221657 55%,#4E2264);display:flex;align-items:center;justify-content:center;padding:30px}
+.gate .card{width:min(100%,340px);background:var(--cream);border-radius:24px;padding:30px 26px;text-align:center}
+.gate h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:26px}
+.gate p{font-size:12.5px;color:var(--ink-soft);margin-top:4px;letter-spacing:.06em}
+.gate input{width:100%;min-height:50px;margin-top:12px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);padding:12px 16px;font-size:16px;font-family:'Jost',sans-serif;outline:none}
+.gate input:focus{border-color:var(--azure)}
+.gate .err{display:none;color:var(--danger);font-size:12.5px;margin-top:10px}
+.gate.bad .err{display:block}
+.gate.bad .card{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+/* move sheet */
+.scrim{position:fixed;inset:0;z-index:80;background:rgba(10,15,35,.5);opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim.show{opacity:1;pointer-events:auto}
+.sheet{position:fixed;z-index:81;left:50%;bottom:0;transform:translate(-50%,100%);width:min(100%,480px);max-height:86dvh;overflow-y:auto;background:var(--cream);border-radius:26px 26px 0 0;padding:16px 22px calc(28px + env(safe-area-inset-bottom));transition:transform .4s cubic-bezier(.22,.8,.32,1)}
+.sheet.show{transform:translate(-50%,0)}
+.sheet h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:23px;text-align:center;margin-top:6px}
+.sheet .sub2{text-align:center;font-size:12.5px;color:var(--ink-soft);margin-top:2px}
+.sheet-close{position:absolute;top:14px;right:16px;width:36px;height:36px;border:none;border-radius:50%;background:var(--cream-2);color:var(--ink-soft);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,80px);z-index:120;background:var(--ink);color:#F5F1E6;font-size:13.5px;letter-spacing:.04em;padding:12px 20px;border-radius:999px;opacity:0;transition:transform .35s,opacity .35s;pointer-events:none;max-width:90%;text-align:center}
+.toast.show{transform:translate(-50%,0);opacity:1}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="topbar">
+    <a class="back" href="index.html" aria-label="Back to site">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+    </a>
+    <div class="brand">AZUR<i aria-hidden="true"></i></div>
+    <span class="admintag">Admin</span>
+  </div>
+  <h1>Studio desk</h1>
+  <p class="sub" id="statLine">&nbsp;</p>
+
+  <div class="tabs">
+    <button type="button" class="tab on" data-pane="bookings">Bookings</button>
+    <button type="button" class="tab" data-pane="calendar">Calendar</button>
+    <button type="button" class="tab" data-pane="avail">Hours</button>
+    <button type="button" class="tab" data-pane="settings">Settings</button>
+  </div>
+
+  <!-- BOOKINGS -->
+  <section class="pane on" id="pane-bookings">
+    <div class="filters">
+      <select id="filterLoc">
+        <option value="all">All bookings</option>
+      </select>
+      <label class="chk"><input type="checkbox" id="showPast">Past</label>
+    </div>
+    <div id="bookingList"><p class="empty">Loading&hellip;</p></div>
+    <button type="button" class="btn btn-line" id="refreshBtn">Refresh</button>
+  </section>
+
+  <!-- CALENDAR -->
+  <section class="pane" id="pane-calendar">
+    <div class="weeknav">
+      <button type="button" class="wbtn" id="calPrev" aria-label="Previous week">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+      </button>
+      <div class="wlabel"><b id="calRange">&nbsp;</b><small id="calCount">&nbsp;</small></div>
+      <button type="button" class="wbtn" id="calNext" aria-label="Next week">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+      </button>
+    </div>
+    <div class="filters">
+      <select id="calLoc"></select>
+      <button type="button" class="chipbtn" id="calToday">This week</button>
+    </div>
+
+    <div class="calwrap" id="calWrap"></div>
+    <p class="note">Scroll sideways for the rest of the week. Tap an appointment to open it.</p>
+
+    <button type="button" class="btn btn-gold" id="calDownload">Download this week</button>
+  </section>
+
+  <!-- AVAILABILITY -->
+  <section class="pane" id="pane-avail">
+    <div class="seg" id="availLocSeg"></div>
+    <p class="note" id="staffedNote" style="display:none">This clinic has staff assigned (Settings → Clinic staff) — its bookable hours now come from their schedules, so the hours below are unused. "Block specific times" still works to shut a time down regardless of who's on duty.</p>
+
+    <p class="section-label">Usual shift</p>
+    <button type="button" class="shiftcard" id="usualShiftBtn">
+      <span class="stxt"><b id="usualShiftText">—</b><small>Tap to change · applies to every day</small></span>
+      <span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>
+    </button>
+
+    <p class="section-label">Weekly schedule</p>
+    <div id="dayList"></div>
+    <p class="note">These seven days repeat every week — they never roll forward. Tap a day to open later, close early, or close that day.</p>
+
+    <p class="section-label">Block specific times</p>
+    <div class="datebar" id="blockDateBar"></div>
+    <div class="slots" id="blockGrid"></div>
+    <button type="button" class="btn btn-dark" id="blockDayBtn">Block entire day</button>
+    <p class="note" style="text-align:center">Tap a time to block or unblock it. Blocked times show as taken to clients.</p>
+  </section>
+
+  <!-- SETTINGS -->
+  <section class="pane" id="pane-settings">
+    <p class="section-label">Home therapists</p>
+    <div id="therList"></div>
+    <button type="button" class="btn btn-line addbtn" id="therAddBtn">Add a therapist</button>
+    <p class="note">Tap a therapist to edit their photo, name and description. Changes show on the Home Service page immediately.</p>
+
+    <p class="section-label" style="margin-top:26px">Rituals</p>
+    <div id="svcList"></div>
+    <button type="button" class="btn btn-line addbtn" id="svcAddBtn">Add a ritual</button>
+    <p class="note">These are the services clients can book, in the clinic and at home.</p>
+
+    <p class="section-label" style="margin-top:26px">Clinic staff</p>
+    <div id="staffList"></div>
+    <button type="button" class="btn btn-line addbtn" id="staffAddBtn">Add a therapist</button>
+    <p class="note">Set which clinic each therapist works at, and when. A time only closes to clients once every therapist on duty for that hour is already booked.</p>
+
+    <p class="section-label" style="margin-top:26px">Account</p>
+    <p class="note" style="text-align:center" id="whoami">&nbsp;</p>
+
+    <p class="section-label" style="margin-top:26px">Backup</p>
+    <button type="button" class="btn btn-line" id="exportBtn">Export bookings &amp; settings</button>
+    <p class="note">Everything lives safely in your online database. The export is an extra copy for your own records.</p>
+
+    <button type="button" class="btn btn-dark" id="lockBtn" style="margin-top:26px">Sign out</button>
+  </section>
+</div>
+
+<!-- MOVE SHEET -->
+<div class="scrim" id="moveScrim"></div>
+<div class="sheet" id="moveSheet" role="dialog" aria-modal="true">
+  <button type="button" class="sheet-close" id="moveClose" aria-label="Close">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+  </button>
+  <h3>Move appointment</h3>
+  <p class="sub2" id="moveWho"></p>
+  <p class="section-label">New day</p>
+  <div class="datebar" id="moveDateBar"></div>
+  <p class="section-label">New time</p>
+  <div class="slots" id="moveGrid"></div>
+  <button type="button" class="btn btn-gold" id="moveConfirm" disabled>Confirm new time</button>
+</div>
+
+<!-- CALENDAR: appointment detail + download sheets -->
+<div class="scrim" id="calScrim"></div>
+<div class="sheet" id="evSheet" role="dialog" aria-modal="true">
+  <button type="button" class="sheet-close" id="evClose" aria-label="Close">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+  </button>
+  <h3 id="evTitle">Appointment</h3>
+  <p class="sub2" id="evWhen">&nbsp;</p>
+  <div id="evBody"></div>
+</div>
+
+<div class="sheet" id="dlSheet" role="dialog" aria-modal="true">
+  <button type="button" class="sheet-close" id="dlClose" aria-label="Close">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+  </button>
+  <h3>Download this week</h3>
+  <p class="sub2" id="dlSub">&nbsp;</p>
+  <button type="button" class="btn btn-gold" id="dlPrint">Print / Save as PDF</button>
+  <button type="button" class="btn btn-line" id="dlCsv">Spreadsheet (.csv)</button>
+  <button type="button" class="btn btn-line" id="dlIcs">Add to phone calendar (.ics)</button>
+  <p class="note">The PDF keeps the week laid out like a timetable. The spreadsheet is one row per appointment. The .ics adds them to Apple/Google Calendar.</p>
+</div>
+
+<!-- SHIFT EDIT SHEET (usual shift, or one specific date) -->
+<div class="scrim" id="shiftScrim"></div>
+<div class="sheet" id="shiftSheet" role="dialog" aria-modal="true">
+  <button type="button" class="sheet-close" id="shiftClose" aria-label="Close">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+  </button>
+  <h3 id="shiftTitle">Usual shift</h3>
+  <p class="sub2" id="shiftSub">Applies to every day</p>
+
+  <div class="presets" id="shiftPresets"></div>
+
+  <div class="shiftrow">
+    <select id="shiftStart" aria-label="Opening time"></select>
+    <span class="arrow" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+    <select id="shiftEnd" aria-label="Closing time"></select>
+  </div>
+  <p class="shiftpreview" id="shiftPreview">&nbsp;</p>
+
+  <button type="button" class="btn btn-gold" id="shiftSave">Save</button>
+  <button type="button" class="btn warn-line" id="shiftClosed">Closed this day</button>
+</div>
+
+<!-- THERAPIST EDIT SHEET -->
+<div class="scrim" id="editScrim"></div>
+<div class="sheet" id="therSheet" role="dialog" aria-modal="true">
+  <button type="button" class="sheet-close" id="therClose" aria-label="Close">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+  </button>
+  <h3 id="therTitle">Edit therapist</h3>
+  <p class="sub2" id="therSub">Shown to clients on the Home Service page</p>
+  <div class="photo-edit">
+    <span class="pimg"><img id="therPhotoPreview" alt="Therapist photo preview"></span>
+    <button type="button" class="abtn" id="therPhotoBtn">Change photo</button>
+    <input type="file" id="therPhotoFile" accept="image/*" style="display:none">
+  </div>
+  <div class="fld"><label for="therName">Name</label><input id="therName" type="text" placeholder="e.g. Nour"></div>
+  <div class="fld"><label for="therSpec">Specialty</label><input id="therSpec" type="text" placeholder="e.g. Holistic Massage"></div>
+  <div class="fld"><label for="therDesc">Description</label><textarea id="therDesc" placeholder="A line or two clients see about this therapist"></textarea></div>
+  <button type="button" class="btn btn-gold" id="therSave">Save</button>
+  <button type="button" class="btn warn-line" id="therRemove">Remove therapist</button>
+</div>
+
+<!-- RITUAL EDIT SHEET -->
+<div class="sheet" id="svcSheet" role="dialog" aria-modal="true">
+  <button type="button" class="sheet-close" id="svcClose" aria-label="Close">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+  </button>
+  <h3 id="svcTitle">Edit ritual</h3>
+  <p class="sub2">What clients can book, and how long it takes</p>
+  <div class="fld"><label for="svcName">Name</label><input id="svcName" type="text" placeholder="e.g. Hot Stone Ritual"></div>
+  <div class="fld"><label for="svcMinutes">Duration</label><select id="svcMinutes"></select></div>
+  <button type="button" class="btn btn-gold" id="svcSave">Save</button>
+  <button type="button" class="btn warn-line" id="svcRemove">Remove ritual</button>
+</div>
+
+<!-- CLINIC STAFF EDIT SHEET -->
+<div class="sheet" id="staffSheet" role="dialog" aria-modal="true">
+  <button type="button" class="sheet-close" id="staffClose" aria-label="Close">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+  </button>
+  <h3 id="staffTitle">New therapist</h3>
+  <p class="sub2">Not shown to clients — for your own scheduling</p>
+  <div class="fld"><label for="staffName">Name</label><input id="staffName" type="text" placeholder="e.g. Maya"></div>
+  <p class="section-label" style="margin-top:20px">Weekly schedule</p>
+  <div id="staffDayList"></div>
+  <p class="note">These seven days repeat every week. Tap a day to set which clinic they're at and their hours, or to mark it off.</p>
+  <button type="button" class="btn btn-gold" id="staffSave" style="margin-top:16px">Save</button>
+  <button type="button" class="btn warn-line" id="staffRemove">Remove therapist</button>
+</div>
+
+<!-- CLINIC STAFF: ONE DAY SHEET -->
+<div class="sheet" id="staffDaySheet" role="dialog" aria-modal="true">
+  <button type="button" class="sheet-close" id="staffDayClose" aria-label="Close">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg>
+  </button>
+  <h3 id="staffDayTitle">Monday</h3>
+  <p class="sub2" id="staffDaySub"></p>
+  <div class="fld"><label for="staffDayClinic">Clinic</label><select id="staffDayClinic"></select></div>
+  <div class="rowline">
+    <select id="staffDayStart"></select>
+    <span>&rarr;</span>
+    <select id="staffDayEnd"></select>
+  </div>
+  <p class="shiftpreview" id="staffDayPreview"></p>
+  <button type="button" class="btn btn-gold" id="staffDaySave" style="margin-top:16px">Save</button>
+  <button type="button" class="btn warn-line" id="staffDayOff">Off this day</button>
+</div>
+
+<!-- GATE -->
+<div class="gate" id="gate">
+  <div class="card">
+    <div class="brand" style="display:inline-block">AZUR<i aria-hidden="true"></i></div>
+    <h2 style="margin-top:12px">Admin access</h2>
+    <p>Sign in with your admin account</p>
+    <input id="gateEmail" type="email" autocomplete="username" placeholder="Email" aria-label="Email">
+    <input id="gatePass" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password">
+    <p class="err" id="gateErr">Wrong email or password — try again.</p>
+    <button type="button" class="btn btn-gold" id="gateBtn">Sign in</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="printArea" aria-hidden="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* AZUR booking store — Supabase edition.
+   Same job as the old localStorage store, but every read/write goes to
+   the shared online database, so all phones see the same availability. */
+(function (global) {
+  var SUPABASE_URL = 'https://swlqpcbnduzypfvrnbnd.supabase.co';
+  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN3bHFwY2JuZHV6eXBmdnJuYm5kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY3MjQ3MDYsImV4cCI6MjEwMjMwMDcwNn0.xBhyWOu3ybJ-whTMTZEiYToKGYnF1W4Lz3KjHEwRh4E';
+
+  var DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  var client = null;
+  var cachedSettings = null;
+
+  /* ---------- pure helpers (same as before) ---------- */
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function dateStr(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function todayStr() { return dateStr(new Date()); }
+  function addDays(base, n) { var d = new Date(base.getTime()); d.setDate(d.getDate() + n); return d; }
+  function parseDate(s) { var p = s.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function weekday(s) { return parseDate(s).getDay(); }
+  function toMin(hhmm) { var p = hhmm.split(':'); return (+p[0]) * 60 + (+p[1]); }
+  /* Wraps any minute value (including >= 1440, i.e. past midnight) back onto
+     a normal 00:00–23:59 clock face — used to turn a shift's after-midnight
+     minutes into a real displayable/storable time-of-day. */
+  function toHHMM(min) { var m = ((min % 1440) + 1440) % 1440; return pad(Math.floor(m / 60)) + ':' + pad(m % 60); }
+  function fmtDate(s) { var d = parseDate(s); return DAYS[d.getDay()].slice(0,3) + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate(); }
+  function fmtDateLong(s) { var d = parseDate(s); return DAYS[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate(); }
+  function fmtTime(hhmm) {
+    var m = toMin(hhmm), h = Math.floor(m / 60), mm = m % 60;
+    var ap = h >= 12 ? 'PM' : 'AM';
+    var h12 = h % 12; if (h12 === 0) h12 = 12;
+    return h12 + (mm ? ':' + pad(mm) : ':00') + ' ' + ap;
+  }
+
+  function isObj(x) { return x && typeof x === 'object' && !Array.isArray(x); }
+  function merge(base, over) {
+    if (!isObj(base)) return over === undefined ? base : over;
+    var out = {};
+    Object.keys(base).forEach(function (k) {
+      if (over && Object.prototype.hasOwnProperty.call(over, k)) {
+        if (isObj(base[k]) && isObj(over[k])) out[k] = merge(base[k], over[k]);
+        else out[k] = over[k];
+      } else out[k] = base[k];
+    });
+    if (isObj(over)) Object.keys(over).forEach(function (k) {
+      if (!Object.prototype.hasOwnProperty.call(out, k)) out[k] = over[k];
+    });
+    return out;
+  }
+
+  /* CLINIC_HOURS: noon until midnight.  HOME_HOURS: round the clock. */
+  function hoursAll(start, end) {
+    var h = {};
+    for (var i = 0; i < 7; i++) h[String(i)] = { start: start, end: end };
+    return h;
+  }
+  function clinicHours() { return hoursAll('12:00', '24:00'); }
+  function defaultSettings() {
+    /* NOTE: home-service therapists are NOT part of the defaults — they live
+       only in the database (settings.locations, keys starting with "home-"),
+       so the admin can add and remove them freely without defaults
+       resurrecting deleted ones on the next merge. */
+    return {
+      locations: {
+        'holiday-beach': { name: 'Holiday Beach', area: 'Zouk Mosbeh', hours: clinicHours() },
+        'mejdlaya':      { name: 'Mejdlaya',      area: 'Zgharta',     hours: clinicHours() }
+      },
+      services: [
+        { id: 'holistic-massage', name: 'Holistic Massage', minutes: 60 },
+        { id: 'physiotherapy',    name: 'Physiotherapy',    minutes: 45 },
+        { id: 'thai-stretching',  name: 'Thai Stretching',  minutes: 45 },
+        { id: 'hot-stone',        name: 'Hot Stone Ritual', minutes: 75 },
+        { id: 'facial-care',      name: 'Facial Care',      minutes: 60 }
+      ],
+      /* Clinic staff: each therapist has one shift per weekday, tagged with
+         WHICH clinic they're at that day (or no entry = off that day). This
+         is what gives a clinic slot capacity > 1 — see slotCapacity(). Home
+         therapists are unrelated: they stay simple 1-capacity locations. */
+      staff: [],
+      blocked: {},
+      dates: {}
+    };
+  }
+
+  /* ---------- connection ---------- */
+  function init() {
+    client = global.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    return client.from('settings').select('data').eq('id', 1).single().then(function (res) {
+      if (res.error) throw res.error;
+      cachedSettings = merge(defaultSettings(), res.data.data || {});
+      return cachedSettings;
+    });
+  }
+  function settings() { return cachedSettings; }
+  function refreshSettings() {
+    return client.from('settings').select('data').eq('id', 1).single().then(function (res) {
+      if (res.error) throw res.error;
+      cachedSettings = merge(defaultSettings(), res.data.data || {});
+      return cachedSettings;
+    });
+  }
+  function pushSettings() {
+    return client.from('settings').update({ data: cachedSettings }).eq('id', 1).then(function (res) {
+      return { ok: !res.error, error: res.error };
+    });
+  }
+
+  /* ---------- availability ----------
+
+     A shift is { start, end } in minutes-of-day form, where `end` may run
+     PAST midnight: "14:00" → "28:00" means 2 PM until 4 AM the next morning.
+     A shift belongs entirely to the day it STARTS on — including its
+     after-midnight minutes, which stay booked under that same start date
+     (just shown with a normal 12:00 AM / 1:00 AM clock face). That is what
+     makes "open 2 PM, close 4 AM" show up as 2 PM through 4 AM under ONE
+     date, with midnight as just another slot in the middle — not split
+     onto the next day's date.
+
+     Which shift applies to a date:
+       1. a per-date override in settings.dates[locId][date]
+          (an object = custom hours, null = closed that date)
+       2. otherwise the usual shift for that weekday, locations[locId].hours[dow]
+  */
+  function blockedList(locId, ds) {
+    var b = cachedSettings.blocked || {};
+    return (b[locId] && b[locId][ds]) ? b[locId][ds] : [];
+  }
+  function isDayBlocked(locId, ds) { return blockedList(locId, ds).indexOf('ALL') !== -1; }
+
+  function dateOverride(locId, ds) {
+    var d = cachedSettings.dates || {};
+    if (d[locId] && Object.prototype.hasOwnProperty.call(d[locId], ds)) return d[locId][ds];
+    return undefined;
+  }
+  function hasOverride(locId, ds) { return dateOverride(locId, ds) !== undefined; }
+
+  /* The shift starting on date ds (null = closed that day). */
+  function shiftFor(locId, ds) {
+    var ov = dateOverride(locId, ds);
+    if (ov !== undefined) return ov;
+    var loc = cachedSettings.locations[locId];
+    if (!loc || !loc.hours) return null;
+    return loc.hours[String(weekday(ds))] || null;
+  }
+
+  /* ---------- clinic staff (multi-therapist capacity) ----------
+
+     Each staff member has one shift per weekday: { clinic, start, end }.
+     Same minute model as a location shift — end may run past 1440 to mean
+     "next morning", and the whole shift belongs to the day it starts on.
+
+     A location is "staffed" once ANY therapist has a day pointing at it.
+     Once staffed, ITS OWN weekly hours (locations[id].hours) stop being
+     used for slot generation — the union of staff shifts takes over
+     entirely, so the clinic is only ever open when someone is actually on
+     duty. Locations nobody is ever assigned to (or home therapists, who
+     never appear in staff schedules) keep the old single-capacity
+     behaviour, unaffected. */
+  function staffList() { return cachedSettings.staff || []; }
+
+  function isStaffedLocation(locId) {
+    return staffList().some(function (s) {
+      var sc = s.schedule || {};
+      return Object.keys(sc).some(function (d) { return sc[d] && sc[d].clinic === locId; });
+    });
+  }
+
+  /* Every therapist on duty at locId on ds, as {staffId, name, start, end}
+     (minutes, possibly past 1440). */
+  function staffShiftsFor(locId, ds) {
+    var dow = String(weekday(ds));
+    var out = [];
+    staffList().forEach(function (s) {
+      var sh = s.schedule && s.schedule[dow];
+      if (sh && sh.clinic === locId) {
+        out.push({ staffId: s.id, name: s.name, start: toMin(sh.start), end: toMin(sh.end) });
+      }
+    });
+    return out;
+  }
+
+  /* How many therapists are on duty to cover the hour starting at minute m. */
+  function slotCapacity(locId, ds, m) {
+    if (!isStaffedLocation(locId)) return 1;
+    var n = 0;
+    staffShiftsFor(locId, ds).forEach(function (sh) {
+      if (sh.start <= m && m + 60 <= sh.end) n++;
+    });
+    return n;
+  }
+
+  /* Every slot start time offered ON date ds — ds's own shift(s), start to
+     end, with no cap at midnight. `m` can run past 1440 (e.g. 1500 = 1 AM
+     the next morning); toHHMM() wraps it onto a normal clock face when
+     it's displayed or stored, but the slot stays listed under THIS date. */
+  function slotMinutes(locId, ds) {
+    var out = [];
+    if (isStaffedLocation(locId)) {
+      staffShiftsFor(locId, ds).forEach(function (sh) {
+        for (var m = sh.start; m + 60 <= sh.end; m += 60) out.push(m);
+      });
+    } else {
+      var sh2 = shiftFor(locId, ds);
+      if (sh2) {
+        var start = toMin(sh2.start), end = toMin(sh2.end);
+        for (var m2 = start; m2 + 60 <= end; m2 += 60) out.push(m2);
+      }
+    }
+    out.sort(function (a, b) { return a - b; });
+    var seen = {}, res = [];
+    out.forEach(function (x) { if (!seen[x]) { seen[x] = 1; res.push(x); } });
+    return res;
+  }
+
+  function isOpen(locId, ds) {
+    if (!cachedSettings.locations[locId]) return false;
+    if (isDayBlocked(locId, ds)) return false;
+    return slotMinutes(locId, ds).length > 0;
+  }
+
+  /* Fetch how many bookings (and which therapists) hold each time on one
+     location + day (no names, no phones — just enough to compute
+     capacity and to auto-assign a free therapist). */
+  function takenSet(locId, ds) {
+    return client.from('taken_slots').select('time, staff_id').eq('location', locId).eq('date', ds)
+      .then(function (res) {
+        if (res.error) throw res.error;
+        var map = {};
+        (res.data || []).forEach(function (r) {
+          var t = String(r.time).slice(0,5);
+          if (!map[t]) map[t] = { count: 0, staff: {} };
+          map[t].count++;
+          if (r.staff_id) map[t].staff[r.staff_id] = true;
+        });
+        return map;
+      });
+  }
+
+  /* Which therapist(s) are on duty at locId/ds/time t but not already
+     holding that slot — used to auto-assign a booking to a free one.
+     ignoreStaffId (optional) treats that one therapist's existing hold on
+     this slot as not counting — used when a booking is moving within its
+     own day and shouldn't be blocked by its own old reservation.
+
+     t is a normal 00:00–23:59 clock string (what's stored on the booking),
+     but a shift's OWN minutes can run past 1440 (a "12 PM -> 2 AM" shift
+     covers "01:00" as raw minute 1500, not 60). So a shift is checked
+     against both readings of t — same-day (m) and after-midnight (m+1440)
+     — and matches whichever one actually falls inside it. */
+  function freeStaffFor(locId, ds, t, taken, ignoreStaffId) {
+    var m = toMin(t), mNext = m + 1440;
+    var rec = taken[t];
+    var busy = (rec && rec.staff) || {};
+    return staffShiftsFor(locId, ds).filter(function (sh) {
+      var covers = (sh.start <= m && m + 60 <= sh.end) || (sh.start <= mNext && mNext + 60 <= sh.end);
+      return covers && (!busy[sh.staffId] || sh.staffId === ignoreStaffId);
+    });
+  }
+
+  /* ---------- clinic staff editing (admin) ---------- */
+  function genStaffId() {
+    var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    var c = 'staff-';
+    for (var i = 0; i < 8; i++) c += chars[Math.floor(Math.random() * chars.length)];
+    return c;
+  }
+  function staffById(id) {
+    var list = staffList();
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+  function addStaff(name) {
+    if (!cachedSettings.staff) cachedSettings.staff = [];
+    var s = { id: genStaffId(), name: name, schedule: {} };
+    cachedSettings.staff.push(s);
+    return pushSettings().then(function (res) { return { ok: res.ok, staff: s }; });
+  }
+  function removeStaff(id) {
+    if (!cachedSettings.staff) return Promise.resolve({ ok: false });
+    cachedSettings.staff = cachedSettings.staff.filter(function (s) { return s.id !== id; });
+    return pushSettings();
+  }
+  function renameStaff(id, name) {
+    var s = staffById(id);
+    if (!s) return Promise.resolve({ ok: false });
+    s.name = name;
+    return pushSettings();
+  }
+  /* shift = null (off that day) or { clinic, start, end }. */
+  function setStaffDay(id, dow, shift) {
+    var s = staffById(id);
+    if (!s) return Promise.resolve({ ok: false });
+    if (!s.schedule) s.schedule = {};
+    if (shift) s.schedule[String(dow)] = { clinic: shift.clinic, start: shift.start, end: shift.end };
+    else delete s.schedule[String(dow)];
+    return pushSettings();
+  }
+
+  /* Compute slot list from cached settings + a takenSet. `ignore`, when
+     given as {time, staffId}, treats that one held slot as free — used
+     when moving a booking to a day it's already sitting on. */
+  function slotsWith(locId, ds, taken, ignore) {
+    if (!cachedSettings.locations[locId]) return [];
+    var out = [];
+    var now = new Date();
+    var isToday = ds === todayStr();
+    var nowMin = now.getHours() * 60 + now.getMinutes();
+    var blocked = blockedList(locId, ds);
+    var dayBlocked = blocked.indexOf('ALL') !== -1;
+    var isPastDay = parseDate(ds) < parseDate(todayStr());
+    slotMinutes(locId, ds).forEach(function (m) {
+      var t = toHHMM(m);
+      var cap = slotCapacity(locId, ds, m);
+      var rec = taken[t];
+      var takenCount = rec ? rec.count : 0;
+      if (ignore && ignore.time === t) takenCount = Math.max(0, takenCount - 1);
+      var status = 'available';
+      if (isPastDay) status = 'past';
+      else if (isToday && m <= nowMin) status = 'past';
+      else if (dayBlocked || blocked.indexOf(t) !== -1) status = 'blocked';
+      else if (takenCount >= cap) status = 'taken';
+      out.push({ time: t, status: status, capacity: cap, taken: takenCount });
+    });
+    return out;
+  }
+
+  /* ---------- schedule editing (admin) ---------- */
+  /* Set the usual shift for every weekday at once. */
+  function setUsualShift(locId, shift) {
+    var loc = cachedSettings.locations[locId];
+    if (!loc) return Promise.resolve({ ok: false });
+    loc.hours = {};
+    for (var i = 0; i < 7; i++) loc.hours[String(i)] = shift ? { start: shift.start, end: shift.end } : null;
+    return pushSettings();
+  }
+  function usualShift(locId) {
+    var loc = cachedSettings.locations[locId];
+    if (!loc || !loc.hours) return null;
+    return loc.hours['0'] || null;
+  }
+  /* Set the shift for ONE weekday (0 = Sunday); null = closed that weekday.
+     The admin Hours tab edits these seven weekday rows directly, so the
+     schedule simply repeats every week instead of rolling forward. */
+  function setWeekdayShift(locId, dow, shift) {
+    var loc = cachedSettings.locations[locId];
+    if (!loc) return Promise.resolve({ ok: false });
+    if (!loc.hours) loc.hours = {};
+    loc.hours[String(dow)] = shift ? { start: shift.start, end: shift.end } : null;
+    return pushSettings();
+  }
+  function weekdayShift(locId, dow) {
+    var loc = cachedSettings.locations[locId];
+    if (!loc || !loc.hours) return null;
+    return loc.hours[String(dow)] || null;
+  }
+  /* shift object = custom hours, null = closed, undefined = follow the usual */
+  function setDateShift(locId, ds, shift) {
+    if (!cachedSettings.dates) cachedSettings.dates = {};
+    if (!cachedSettings.dates[locId]) cachedSettings.dates[locId] = {};
+    if (shift === undefined) delete cachedSettings.dates[locId][ds];
+    else cachedSettings.dates[locId][ds] = shift;
+    return pushSettings();
+  }
+
+  /* ---------- one-time hours-policy self-heal ----------
+     Clinics: 12 PM -> 12 AM. Home service: 24 hours a day.
+     Older databases can still be holding whatever hours were saved
+     before this policy existed. Rather than depending on someone
+     running a SQL migration or clicking through the Hours tab, the
+     very next time an admin signs in, this quietly brings the usual
+     weekly shift for every location in line with the policy — once.
+     A flag on the settings row (hoursPolicyV1) stops it from ever
+     running again, so a deliberate hours change made later by an
+     admin is never silently reverted. Per-date overrides are never
+     touched. */
+  function ensureHoursPolicy() {
+    if (cachedSettings.hoursPolicyV1) return Promise.resolve({ ok: true, changed: false });
+    var changed = false;
+    Object.keys(cachedSettings.locations || {}).forEach(function (id) {
+      var loc = cachedSettings.locations[id];
+      var isHome = loc.home === true || id.indexOf('home-') === 0;
+      var want = isHome ? hoursAll('00:00', '24:00') : clinicHours();
+      if (JSON.stringify(loc.hours || null) !== JSON.stringify(want)) {
+        loc.hours = want;
+        changed = true;
+      }
+    });
+    cachedSettings.hoursPolicyV1 = true;
+    return pushSettings().then(function (res) {
+      return { ok: res.ok, changed: changed };
+    });
+  }
+
+  /* ---------- bookings ---------- */
+  function genCode() {
+    var chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+    var c = 'AZ-';
+    for (var i = 0; i < 4; i++) c += chars[Math.floor(Math.random() * chars.length)];
+    return c;
+  }
+
+  function createBooking(info) {
+    /* fresh pre-check right before inserting: catches slots blocked or
+       taken since the page rendered (the DB unique index is the final
+       guard). For a staffed clinic this also lines up the list of
+       therapists who are on duty and free at that time — a booking is
+       assigned to the first one, falling back to the next if two people
+       grab the same therapist's slot in the same instant. */
+    function precheck() {
+      return Promise.all([refreshSettings(), takenSet(info.location, info.date)]).then(function (r) {
+        var taken = r[1];
+        var slots = slotsWith(info.location, info.date, taken);
+        var ok = false;
+        for (var i = 0; i < slots.length; i++) {
+          if (slots[i].time === info.time) { ok = slots[i].status === 'available'; break; }
+        }
+        if (!ok) return null;
+        if (!isStaffedLocation(info.location)) return [null];
+        var candidates = freeStaffFor(info.location, info.date, info.time, taken);
+        return candidates.length ? candidates : null;
+      });
+    }
+    function attempt(candidates, idx, codeRetries) {
+      var staffId = candidates[idx] ? candidates[idx].staffId : '';
+      var code = genCode();
+      return client.from('bookings').insert({
+        code: code,
+        location: info.location,
+        service_id: info.serviceId,
+        date: info.date,
+        time: info.time,
+        name: info.name,
+        phone: info.phone,
+        note: info.note || '',
+        address: info.address || '',
+        staff_id: staffId
+      }).then(function (res) {
+        if (!res.error) {
+          return { ok: true, booking: { code: code, location: info.location, serviceId: info.serviceId,
+                   date: info.date, time: info.time, name: info.name, phone: info.phone,
+                   note: info.note || '', address: info.address || '', staffId: staffId } };
+        }
+        if (res.error.code === '23505') {
+          if (/bookings_one_per_slot/.test(res.error.message || '')) {
+            if (idx + 1 < candidates.length) return attempt(candidates, idx + 1, codeRetries); /* try the next free therapist */
+            return { ok: false, reason: 'slot-unavailable' };
+          }
+          if (codeRetries < 3) return attempt(candidates, idx, codeRetries + 1); /* rare booking-code collision */
+        }
+        return { ok: false, reason: 'network', error: res.error };
+      });
+    }
+    return precheck().then(function (candidates) {
+      if (!candidates) return { ok: false, reason: 'slot-unavailable' };
+      return attempt(candidates, 0, 1);
+    });
+  }
+
+  function mapRow(r) {
+    return { code: r.code, location: r.location, serviceId: r.service_id,
+             date: String(r.date), time: String(r.time).slice(0,5),
+             name: r.name, phone: r.phone, note: r.note, address: r.address || '',
+             staffId: r.staff_id || '',
+             status: r.status, createdAt: r.created_at };
+  }
+
+  function listBookings() {
+    return client.from('bookings').select('*').order('date', { ascending: true }).order('time', { ascending: true })
+      .then(function (res) {
+        if (res.error) throw res.error;
+        return (res.data || []).map(mapRow);
+      });
+  }
+
+  /* Move an existing booking (as returned by mapRow/listBookings) to a new
+     date + time, re-assigning it to a free therapist at the destination
+     when the location is staffed. `bk`'s own current slot is excluded from
+     the "busy" check when moving within the same day, so re-picking a
+     different hour that day never trips over its own old booking. */
+  function moveBooking(bk, newDate, newTime) {
+    function attempt(candidates, idx) {
+      var staffId = candidates[idx] ? candidates[idx].staffId : '';
+      return client.from('bookings').update({ date: newDate, time: newTime, staff_id: staffId }).eq('code', bk.code).select()
+        .then(function (res) {
+          if (res.error) {
+            if (res.error.code === '23505') {
+              if (idx + 1 < candidates.length) return attempt(candidates, idx + 1);
+              return { ok: false, reason: 'slot-unavailable' };
+            }
+            return { ok: false, reason: 'network', error: res.error };
+          }
+          if (!res.data || !res.data.length) return { ok: false, reason: 'not-found' };
+          return { ok: true, booking: mapRow(res.data[0]) };
+        });
+    }
+    return refreshSettings().then(function () { return takenSet(bk.location, newDate); }).then(function (taken) {
+      if (!isStaffedLocation(bk.location)) return attempt([null], 0);
+      var ignoreStaffId = (bk.date === newDate) ? bk.staffId : null;
+      var candidates = freeStaffFor(bk.location, newDate, newTime, taken, ignoreStaffId);
+      if (!candidates.length) return { ok: false, reason: 'slot-unavailable' };
+      return attempt(candidates, 0);
+    });
+  }
+
+  function cancelBooking(code) {
+    return client.from('bookings').update({ status: 'cancelled' }).eq('code', code).select()
+      .then(function (res) {
+        if (res.error) return { ok: false, error: res.error };
+        return { ok: true };
+      });
+  }
+
+  function completeBooking(code) {
+    return client.from('bookings').update({ status: 'completed' }).eq('code', code).select()
+      .then(function (res) {
+        if (res.error) return { ok: false, error: res.error };
+        return { ok: true };
+      });
+  }
+
+  /* ---------- blocked toggles (admin) ---------- */
+  function toggleBlock(locId, ds, timeOrAll) {
+    if (!cachedSettings.blocked) cachedSettings.blocked = {};
+    if (!cachedSettings.blocked[locId]) cachedSettings.blocked[locId] = {};
+    var list = cachedSettings.blocked[locId][ds] || [];
+    var i = list.indexOf(timeOrAll);
+    if (i === -1) list.push(timeOrAll); else list.splice(i, 1);
+    if (list.length) cachedSettings.blocked[locId][ds] = list;
+    else delete cachedSettings.blocked[locId][ds];
+    return pushSettings();
+  }
+
+  /* ---------- auth (admin) ---------- */
+  function login(email, password) {
+    return client.auth.signInWithPassword({ email: email, password: password })
+      .then(function (res) { return { ok: !res.error, error: res.error }; });
+  }
+  function logout() { return client.auth.signOut(); }
+  function session() {
+    return client.auth.getSession().then(function (res) {
+      return res.data ? res.data.session : null;
+    });
+  }
+
+  function serviceById(id) {
+    var list = (cachedSettings && cachedSettings.services) || [];
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+
+  global.AzurStore = {
+    init: init, settings: settings, refreshSettings: refreshSettings, pushSettings: pushSettings,
+    takenSet: takenSet, slotsWith: slotsWith, isOpen: isOpen, isDayBlocked: isDayBlocked,
+    slotMinutes: slotMinutes, shiftFor: shiftFor, hasOverride: hasOverride, dateOverride: dateOverride,
+    setUsualShift: setUsualShift, usualShift: usualShift, setDateShift: setDateShift,
+    setWeekdayShift: setWeekdayShift, weekdayShift: weekdayShift,
+    ensureHoursPolicy: ensureHoursPolicy,
+    createBooking: createBooking, listBookings: listBookings,
+    moveBooking: moveBooking, cancelBooking: cancelBooking, completeBooking: completeBooking,
+    toggleBlock: toggleBlock,
+    login: login, logout: logout, session: session,
+    serviceById: serviceById,
+    staffList: staffList, staffById: staffById, isStaffedLocation: isStaffedLocation,
+    slotCapacity: slotCapacity, addStaff: addStaff, removeStaff: removeStaff,
+    renameStaff: renameStaff, setStaffDay: setStaffDay,
+    todayStr: todayStr, dateStr: dateStr, addDays: addDays,
+    fmtDate: fmtDate, fmtDateLong: fmtDateLong, fmtTime: fmtTime,
+    DAYS: DAYS
+  };
+})(window);
+
+</script>
+<script>
+(function(){
+  var S = window.AzurStore;
+  var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var bookings = [];
+  function $(id){ return document.getElementById(id); }
+
+  var toastTimer=null;
+  function toast(msg){
+    var t=$('toast'); t.textContent=msg; t.classList.add('show');
+    clearTimeout(toastTimer); toastTimer=setTimeout(function(){ t.classList.remove('show'); },2600);
+  }
+  function esc(s){ return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+  /* ---------- BOOT + GATE ---------- */
+  var gate=$('gate');
+  function boot(){
+    S.init().then(function(){
+      return S.session();
+    }).then(function(sess){
+      if(sess){ gate.style.display='none'; afterLogin(sess); }
+      /* else: gate stays visible */
+    }).catch(function(){
+      toast('Can’t reach the database — check your internet and refresh.');
+    });
+  }
+  function tryLogin(){
+    var email=$('gateEmail').value.trim(), pass=$('gatePass').value;
+    if(!email||!pass) return;
+    $('gateBtn').disabled=true; $('gateBtn').textContent='Signing in…';
+    S.login(email, pass).then(function(res){
+      $('gateBtn').disabled=false; $('gateBtn').textContent='Sign in';
+      if(res.ok){
+        gate.style.display='none';
+        S.session().then(afterLogin);
+      } else {
+        gate.classList.remove('bad'); void gate.offsetWidth; gate.classList.add('bad');
+        $('gatePass').value='';
+      }
+    });
+  }
+  $('gateBtn').addEventListener('click',tryLogin);
+  $('gatePass').addEventListener('keydown',function(e){ if(e.key==='Enter') tryLogin(); });
+  function afterLogin(sess){
+    if(sess && sess.user) $('whoami').textContent = 'Signed in as ' + sess.user.email;
+    S.ensureHoursPolicy().then(function(r){
+      if(r && r.changed) toast('Opening hours updated: clinics 12 PM–12 AM, home service 24h.');
+    }).catch(function(){ /* non-fatal — admin can still fix hours manually from the Hours tab */ }).then(refreshAll);
+  }
+  boot();
+
+  /* ---------- TABS ---------- */
+  document.querySelectorAll('.tab').forEach(function(t){
+    t.addEventListener('click',function(){
+      document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+      t.classList.add('on');
+      document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('on');});
+      $('pane-'+t.getAttribute('data-pane')).classList.add('on');
+    });
+  });
+
+  function statLine(){
+    var today=S.todayStr();
+    var upcoming=bookings.filter(function(b){return b.status==='confirmed'&&b.date>=today;}).length;
+    var todayCount=bookings.filter(function(b){return b.status==='confirmed'&&b.date===today;}).length;
+    $('statLine').textContent=upcoming+' upcoming · '+todayCount+' today';
+  }
+
+  /* ---------- BOOKINGS ---------- */
+  var SPA_PHONE = '81 336 601';
+  var WA_ICON = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.01 2C6.48 2 2 6.48 2 12.01c0 1.98.55 3.83 1.5 5.42L2 22l4.7-1.47a9.96 9.96 0 0 0 5.3 1.52h.01c5.52 0 10-4.48 10-10.01C22.01 6.48 17.53 2 12.01 2Zm5.86 14.3c-.25.7-1.24 1.28-2.02 1.44-.54.11-1.24.2-3.6-.77-3.02-1.25-4.96-4.31-5.11-4.51-.15-.2-1.22-1.62-1.22-3.1 0-1.47.77-2.19 1.05-2.49.25-.28.6-.36.8-.36.2 0 .4 0 .58.01.19.01.44-.07.68.53.25.6.85 2.08.92 2.23.07.15.12.33.02.53-.09.2-.14.32-.28.49-.14.17-.3.38-.42.5-.14.14-.29.29-.13.57.16.28.72 1.21 1.56 1.97 1.07.97 1.96 1.28 2.24 1.42.28.14.44.12.6-.07.17-.19.71-.85.9-1.14.19-.28.38-.24.63-.15.26.1 1.63.79 1.91.93.28.14.47.21.54.33.07.12.07.68-.18 1.34Z"/></svg>';
+  function waDigits(phone){
+    var digits = String(phone || '').replace(/\D/g, '');
+    if (digits.indexOf('961') === 0) return digits;
+    return '961' + digits.replace(/^0+/, '');
+  }
+  function isHome(b){ return String(b.location).indexOf('home-')===0; }
+
+  /* ---------- location helpers (clinics vs home therapists) ---------- */
+  function isHomeLoc(id){
+    var l=S.settings().locations[id];
+    return !!(l && (l.home || String(id).indexOf('home-')===0));
+  }
+  function therapistOrd(id){
+    var l=S.settings().locations[id];
+    if(l && l.ord!=null) return l.ord;
+    var n=parseInt(String(id).replace(/\D+/g,''),10);
+    return isNaN(n)?99:n;
+  }
+  function homeTherIds(){
+    return Object.keys(S.settings().locations).filter(isHomeLoc)
+      .sort(function(a,b){ return therapistOrd(a)-therapistOrd(b) || String(a).localeCompare(String(b)); });
+  }
+  function clinicIds(){
+    return Object.keys(S.settings().locations).filter(function(id){ return !isHomeLoc(id); });
+  }
+  function defHours(){
+    var h={}; for(var i=0;i<7;i++) h[String(i)]={start:'00:00',end:'24:00'}; return h;
+  }
+  var AVATAR_COLORS=['#24418A','#54664F','#B98F4F','#6B4F8A','#7A5240'];
+  function avatarFor(name,i){
+    var initial=String(name||'?').trim().charAt(0).toUpperCase()||'?';
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160">'+
+      '<rect width="160" height="160" fill="'+AVATAR_COLORS[(i||0)%AVATAR_COLORS.length]+'"/>'+
+      '<text x="80" y="104" font-family="Georgia,serif" font-size="64" fill="#FAF7F0" text-anchor="middle">'+initial+'</text></svg>';
+    return 'data:image/svg+xml;base64,'+btoa(unescape(encodeURIComponent(svg)));
+  }
+
+  /* filter dropdown follows the current locations & therapists */
+  function renderFilterOptions(){
+    var sel=$('filterLoc');
+    var keep=sel.value;
+    sel.innerHTML='';
+    function opt(v,t){ var o=document.createElement('option'); o.value=v; o.textContent=t; sel.appendChild(o); }
+    opt('all','All bookings');
+    clinicIds().forEach(function(id){ opt(id,S.settings().locations[id].name); });
+    var thers=homeTherIds();
+    if(thers.length){
+      opt('home','Home service — all');
+      thers.forEach(function(id){ opt(id,'Home · '+S.settings().locations[id].name); });
+    }
+    sel.value=keep;
+    if(sel.selectedIndex===-1) sel.value='all';
+  }
+  function waMessage(b){
+    var loc = S.settings().locations[b.location];
+    var sv = S.serviceById(b.serviceId);
+    if(isHome(b)){
+      return 'Hi ' + b.name + ', this is AZUR Spa 🌿\n\n' +
+        'Confirming your home session:\n' +
+        'Therapist: ' + (loc ? loc.name : '') + '\n' +
+        'Service: ' + (sv ? sv.name : '') + '\n' +
+        'Date: ' + S.fmtDateLong(b.date) + '\n' +
+        'Time: ' + S.fmtTime(b.time) + '\n' +
+        'Address: ' + (b.address || '—') + '\n' +
+        'Booking code: ' + b.code + '\n\n' +
+        'Any questions, reach us anytime at ' + SPA_PHONE + '.';
+    }
+    return 'Hi ' + b.name + ', this is AZUR Spa 🌿\n\n' +
+      'Confirming your appointment:\n' +
+      'Location: ' + (loc ? loc.name + ' · ' + loc.area : b.location) + '\n' +
+      'Service: ' + (sv ? sv.name : '') + '\n' +
+      'Date: ' + S.fmtDateLong(b.date) + '\n' +
+      'Time: ' + S.fmtTime(b.time) + '\n' +
+      'Booking code: ' + b.code + '\n\n' +
+      'Any questions, reach us anytime at ' + SPA_PHONE + '.';
+  }
+  function waLink(b){
+    return 'https://wa.me/' + waDigits(b.phone) + '?text=' + encodeURIComponent(waMessage(b));
+  }
+
+  function bookingCard(b){
+    var loc=S.settings().locations[b.location];
+    var sv=S.serviceById(b.serviceId);
+    var el=document.createElement('div'); el.className='bk';
+    var cancelled=b.status==='cancelled';
+    var finished=b.status==='completed';
+    var tag=cancelled?' · cancelled':(finished?' · finished':'');
+    var active=b.status==='confirmed';
+    var home=isHome(b);
+    var staff=b.staffId?S.staffById(b.staffId):null;
+    el.innerHTML=
+      '<div class="top">'+
+        '<div class="time">'+S.fmtTime(b.time)+'</div>'+
+        '<div class="who"><b>'+esc(b.name)+tag+'</b><small>'+(sv?sv.name:'Ritual')+' · '+(home?'Home visit — ':'')+(loc?loc.name:(home?'former therapist':b.location))+(staff?' · '+esc(staff.name):'')+'</small></div>'+
+        '<span class="code">'+b.code+'</span>'+
+      '</div>'+
+      '<div class="meta"><a href="tel:'+esc(b.phone)+'">'+esc(b.phone)+'</a>'+
+        (home&&b.address?'<br>'+esc(b.address):'')+
+        (b.note?'<br>'+esc(b.note):'')+'</div>'+
+      (active?'<div class="acts"><button type="button" class="abtn mv">Move</button><a class="abtn wa" target="_blank" rel="noopener" href="'+esc(waLink(b))+'">'+WA_ICON+'WhatsApp</a><button type="button" class="abtn ok fin">Finished</button><button type="button" class="abtn warn cx">Cancel</button></div>':'');
+    if(active){
+      el.querySelector('.mv').addEventListener('click',function(){ openMove(b); });
+      el.querySelector('.fin').addEventListener('click',function(){
+        S.completeBooking(b.code).then(function(res){
+          if(res.ok){ toast('Session with '+b.name+' marked finished'); refreshAll(); }
+          else toast('Connection problem — try again.');
+        });
+      });
+      var cx=el.querySelector('.cx');
+      cx.addEventListener('click',function(){
+        if(cx.classList.contains('confirm')){
+          S.cancelBooking(b.code).then(function(res){
+            if(res.ok){ toast('Booking '+b.code+' cancelled — slot is free again'); refreshAll(); }
+            else toast('Connection problem — try again.');
+          });
+        } else {
+          cx.classList.add('confirm'); cx.textContent='Tap again to cancel';
+          setTimeout(function(){ cx.classList.remove('confirm'); cx.textContent='Cancel'; },2600);
+        }
+      });
+    }
+    return el;
+  }
+
+  function renderBookings(){
+    var list=$('bookingList'); list.innerHTML='';
+    var today=S.todayStr();
+    var flt=$('filterLoc').value;
+    var showPast=$('showPast').checked;
+    var items=bookings.filter(function(b){
+      if(flt==='home'){ if(b.location.indexOf('home-')!==0) return false; }
+      else if(flt!=='all'&&b.location!==flt) return false;
+      if(b.status!=='confirmed'&&!showPast) return false;
+      if(!showPast&&b.date<today) return false;
+      return true;
+    });
+    if(!items.length){
+      list.innerHTML='<p class="empty">No bookings here yet.<br>New bookings appear from every phone, instantly.</p>';
+      return;
+    }
+    var lastDate=null;
+    items.forEach(function(b){
+      if(b.date!==lastDate){
+        lastDate=b.date;
+        var h=document.createElement('div'); h.className='dayhead';
+        h.textContent=(b.date===today?'Today — ':'')+S.fmtDateLong(b.date);
+        list.appendChild(h);
+      }
+      list.appendChild(bookingCard(b));
+    });
+  }
+  $('filterLoc').addEventListener('change',renderBookings);
+  $('showPast').addEventListener('change',renderBookings);
+  $('refreshBtn').addEventListener('click',function(){ refreshAll(); toast('Refreshed'); });
+
+  /* ---------- CALENDAR (week view + download) ---------- */
+  var calWeekStart = mondayOf(new Date());
+  var calLoc = 'clinics';
+
+  function mondayOf(d){
+    var x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    var dow = x.getDay();                 /* 0 = Sunday */
+    x.setDate(x.getDate() - ((dow + 6) % 7));
+    return x;
+  }
+  function calDays(){
+    var out = [];
+    for (var i = 0; i < 7; i++) out.push(S.dateStr(S.addDays(calWeekStart, i)));
+    return out;
+  }
+  function calMatches(b){
+    if (b.status === 'cancelled') return false;
+    if (calLoc === 'clinics') return !isHomeLoc(b.location);
+    if (calLoc === 'home') return isHomeLoc(b.location);
+    if (calLoc === 'all') return true;
+    return b.location === calLoc;
+  }
+  function calBookings(){
+    var days = calDays();
+    return bookings.filter(function(b){
+      return calMatches(b) && days.indexOf(b.date) !== -1;
+    });
+  }
+  /* Rows follow the working night, not the clock: a 2 PM -> 4 AM shift lists
+     2 PM, 3 PM ... 11 PM, 12 AM, 1 AM ... 3 AM, instead of splitting the night
+     across the top and bottom of the grid. */
+  function anchorHour(ids){
+    var best = null;
+    ids.forEach(function(id){
+      for (var d = 0; d < 7; d++){
+        var sh = S.weekdayShift(id, d);
+        if (!sh) continue;
+        var h = parseInt(sh.start, 10);
+        if (best === null || h < best) best = h;
+      }
+    });
+    return best === null ? 0 : best;
+  }
+  function orderHours(hoursObj, ids){
+    var a = anchorHour(ids);
+    return Object.keys(hoursObj).map(Number).sort(function(x, y){
+      return ((x - a + 24) % 24) - ((y - a + 24) % 24);
+    });
+  }
+
+  function dayName(ds){ var p=ds.split('-'); return S.DAYS[new Date(+p[0],+p[1]-1,+p[2]).getDay()]; }
+  function locName(id){
+    var l = S.settings().locations[id];
+    return l ? l.name : 'Former therapist';
+  }
+  function svcName(id){
+    var sv = S.serviceById(id);
+    return sv ? sv.name : 'Ritual';
+  }
+  function svcMinutes(id){
+    var sv = S.serviceById(id);
+    return sv ? sv.minutes : 60;
+  }
+
+  function renderCalLocOptions(){
+    var sel = $('calLoc'), keep = sel.value;
+    sel.innerHTML = '';
+    function opt(v,t){ var o=document.createElement('option'); o.value=v; o.textContent=t; sel.appendChild(o); }
+    opt('clinics','In the clinic — all');
+    clinicIds().forEach(function(id){ opt(id, S.settings().locations[id].name); });
+    var thers = homeTherIds();
+    if (thers.length){
+      opt('home','Home service — all');
+      thers.forEach(function(id){ opt(id, 'Home · ' + S.settings().locations[id].name); });
+    }
+    opt('all','Everything');
+    sel.value = keep || 'clinics';
+    if (sel.selectedIndex === -1) sel.value = 'clinics';
+  }
+
+  function renderCalendar(){
+    var days = calDays();
+    var items = calBookings();
+    $('calRange').textContent = weekLabel();
+    $('calCount').textContent = items.length + (items.length === 1 ? ' appointment' : ' appointments');
+
+    var wrap = $('calWrap');
+    if (!items.length){
+      wrap.innerHTML = '<p class="calempty">Nothing booked this week.</p>';
+      return;
+    }
+
+    /* which locations this view covers */
+    var ids = (calLoc === 'clinics') ? clinicIds()
+            : (calLoc === 'home')    ? homeTherIds()
+            : (calLoc === 'all')     ? Object.keys(S.settings().locations)
+            : [calLoc];
+
+    /* rows = every hour that is open somewhere this week, or already booked */
+    var hours = {};
+    items.forEach(function(b){ hours[parseInt(b.time,10)] = true; });
+    days.forEach(function(ds){
+      ids.forEach(function(id){
+        S.slotMinutes(id, ds).forEach(function(m){ hours[Math.floor(m/60)] = true; });
+      });
+    });
+    var hlist = orderHours(hours, ids);
+
+    var byCell = {};
+    items.forEach(function(b){
+      var k = b.date + '|' + parseInt(b.time,10);
+      (byCell[k] = byCell[k] || []).push(b);
+    });
+
+    /* shade closed hours only when one location is in view (otherwise ambiguous) */
+    var single = ids.length === 1 ? ids[0] : null;
+    var openAt = {};
+    if (single){
+      days.forEach(function(ds){
+        S.slotMinutes(single, ds).forEach(function(m){ openAt[ds + '|' + Math.floor(m/60)] = true; });
+      });
+    }
+
+    var today = S.todayStr();
+    var showWhere = ids.length > 1;
+    var html = '<div class="calgrid"><div class="ch corner"></div>';
+    days.forEach(function(ds){
+      var parts = S.fmtDate(ds).split(', ');            /* "Mon", "Aug 17" */
+      html += '<div class="ch' + (ds === today ? ' istoday' : '') + '">' +
+              '<b>' + parts[0] + '</b><i>' + parts[1].split(' ')[1] + '</i></div>';
+    });
+    hlist.forEach(function(h){
+      var hh = (h < 10 ? '0' : '') + h + ':00';
+      html += '<div class="th">' + S.fmtTime(hh).replace(':00','') + '</div>';
+      days.forEach(function(ds){
+        var evs = byCell[ds + '|' + h] || [];
+        if (!evs.length){
+          var shut = single && !openAt[ds + '|' + h];
+          html += '<div class="cell' + (shut ? ' off' : '') + '"></div>';
+          return;
+        }
+        html += '<div class="cell">';
+        evs.forEach(function(b){
+          html += '<button type="button" class="ev' + (b.status === 'completed' ? ' done' : '') + '" data-code="' + b.code + '">' +
+                  '<b>' + esc(b.name) + '</b>' +
+                  '<small>' + esc(svcName(b.serviceId)) + '</small>' +
+                  (showWhere ? '<small>' + esc(locName(b.location)) + '</small>' : '') +
+                  '</button>';
+        });
+        html += '</div>';
+      });
+    });
+    html += '</div>';
+    wrap.innerHTML = html;
+
+    wrap.querySelectorAll('.ev').forEach(function(el){
+      el.addEventListener('click', function(){
+        var code = el.getAttribute('data-code');
+        for (var i = 0; i < bookings.length; i++){
+          if (bookings[i].code === code){ openEvSheet(bookings[i]); return; }
+        }
+      });
+    });
+  }
+
+  /* tap an appointment: same card (and same actions) as the Bookings tab */
+  function openEvSheet(b){
+    $('evTitle').textContent = b.name;
+    $('evWhen').textContent = S.fmtDateLong(b.date) + ' · ' + S.fmtTime(b.time) + ' · ' + locName(b.location);
+    var body = $('evBody'); body.innerHTML = '';
+    body.appendChild(bookingCard(b));
+    $('calScrim').classList.add('show'); $('evSheet').classList.add('show');
+  }
+  function closeCalSheets(){
+    $('calScrim').classList.remove('show');
+    $('evSheet').classList.remove('show');
+    $('dlSheet').classList.remove('show');
+  }
+  $('evClose').addEventListener('click', closeCalSheets);
+  $('dlClose').addEventListener('click', closeCalSheets);
+  $('calScrim').addEventListener('click', closeCalSheets);
+
+  $('calPrev').addEventListener('click', function(){ calWeekStart = S.addDays(calWeekStart,-7); renderCalendar(); });
+  $('calNext').addEventListener('click', function(){ calWeekStart = S.addDays(calWeekStart, 7); renderCalendar(); });
+  $('calToday').addEventListener('click', function(){ calWeekStart = mondayOf(new Date()); renderCalendar(); });
+  $('calLoc').addEventListener('change', function(){ calLoc = this.value; renderCalendar(); });
+
+  /* ---------- downloads ---------- */
+  function weekLabel(){
+    var d = calDays();
+    return S.fmtDate(d[0]).replace(/^[A-Za-z]+, /,'') + ' – ' + S.fmtDate(d[6]).replace(/^[A-Za-z]+, /,'');
+  }
+  function scopeLabel(){
+    var sel = $('calLoc');
+    return sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].textContent : '';
+  }
+  function sortedWeek(){
+    return calBookings().slice().sort(function(a,b){
+      return a.date === b.date ? (a.time < b.time ? -1 : 1) : (a.date < b.date ? -1 : 1);
+    });
+  }
+  function download(name, mime, text){
+    var blob = new Blob([text], {type:mime});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 400);
+  }
+
+  $('calDownload').addEventListener('click', function(){
+    $('dlSub').textContent = weekLabel() + ' · ' + scopeLabel();
+    $('calScrim').classList.add('show'); $('dlSheet').classList.add('show');
+  });
+
+  $('dlCsv').addEventListener('click', function(){
+    var rows = [['Date','Day','Time','Client','Phone','Service','Minutes','Where','Address','Note','Code','Status']];
+    sortedWeek().forEach(function(b){
+      rows.push([b.date, dayName(b.date), S.fmtTime(b.time),
+        b.name, b.phone, svcName(b.serviceId), svcMinutes(b.serviceId),
+        (isHomeLoc(b.location)?'Home visit — ':'')+locName(b.location),
+        b.address||'', b.note||'', b.code, b.status]);
+    });
+    var csv = '﻿' + rows.map(function(r){
+      return r.map(function(c){ return '"' + String(c==null?'':c).replace(/"/g,'""') + '"'; }).join(',');
+    }).join('\r\n');
+    download('azur-week-'+calDays()[0]+'.csv','text/csv;charset=utf-8',csv);
+    toast('Spreadsheet downloaded'); closeCalSheets();
+  });
+
+  $('dlIcs').addEventListener('click', function(){
+    function stamp(ds, hhmm, addMin){
+      var p = ds.split('-'), t = String(hhmm).split(':');
+      var d = new Date(+p[0], +p[1]-1, +p[2], +t[0], +t[1]);
+      if (addMin) d = new Date(d.getTime() + addMin*60000);
+      function z(n){ return (n<10?'0':'')+n; }
+      return d.getFullYear()+z(d.getMonth()+1)+z(d.getDate())+'T'+z(d.getHours())+z(d.getMinutes())+'00';
+    }
+    function esc2(s){ return String(s==null?'':s).replace(/([,;\\])/g,'\\$1').replace(/\n/g,'\\n'); }
+    var out = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//AZUR//Booking//EN','CALSCALE:GREGORIAN','METHOD:PUBLISH','X-WR-CALNAME:AZUR '+weekLabel()];
+    sortedWeek().forEach(function(b){
+      out.push('BEGIN:VEVENT');
+      out.push('UID:'+b.code+'@azur.spa');
+      out.push('DTSTAMP:'+stamp(S.todayStr(),'00:00')+'Z');
+      out.push('DTSTART:'+stamp(b.date,b.time));
+      out.push('DTEND:'+stamp(b.date,b.time,svcMinutes(b.serviceId)));
+      out.push('SUMMARY:'+esc2(b.name+' — '+svcName(b.serviceId)));
+      out.push('LOCATION:'+esc2(isHomeLoc(b.location) ? (b.address || 'Home visit') : locName(b.location)));
+      out.push('DESCRIPTION:'+esc2('Booking '+b.code+'\n'+b.phone+(b.note?'\n'+b.note:'')));
+      out.push('END:VEVENT');
+    });
+    out.push('END:VCALENDAR');
+    download('azur-week-'+calDays()[0]+'.ics','text/calendar;charset=utf-8', out.join('\r\n'));
+    toast('Calendar file downloaded'); closeCalSheets();
+  });
+
+  $('dlPrint').addEventListener('click', function(){
+    buildPrintSheet();
+    closeCalSheets();
+    setTimeout(function(){ window.print(); }, 250);
+  });
+
+  function buildPrintSheet(){
+    var days = calDays(), items = calBookings();
+    var ids = (calLoc === 'clinics') ? clinicIds()
+            : (calLoc === 'home')    ? homeTherIds()
+            : (calLoc === 'all')     ? Object.keys(S.settings().locations)
+            : [calLoc];
+    var hours = {};
+    items.forEach(function(b){ hours[parseInt(b.time,10)] = true; });
+    var hlist = orderHours(hours, ids);
+    var byCell = {};
+    items.forEach(function(b){
+      var k = b.date+'|'+parseInt(b.time,10);
+      (byCell[k] = byCell[k] || []).push(b);
+    });
+    var h = '<h2>AZUR — '+weekLabel()+'</h2>'+
+      '<p class="psub">'+scopeLabel()+' · '+items.length+' appointment'+(items.length===1?'':'s')+'</p>';
+    if (!hlist.length){
+      h += '<p>Nothing booked this week.</p>';
+      $('printArea').innerHTML = h;
+      return;
+    }
+    h += '<table><thead><tr><th></th>';
+    days.forEach(function(ds){ h += '<th>'+S.fmtDate(ds)+'</th>'; });
+    h += '</tr></thead><tbody>';
+    hlist.forEach(function(hr){
+      h += '<tr><td class="ptime">'+S.fmtTime((hr<10?'0':'')+hr+':00')+'</td>';
+      days.forEach(function(ds){
+        var evs = byCell[ds+'|'+hr] || [];
+        h += '<td>' + evs.map(function(b){
+          var staff=b.staffId?S.staffById(b.staffId):null;
+          return '<div class="pev">'+esc(b.name)+
+            '<span>'+esc(svcName(b.serviceId))+'</span>'+
+            '<span>'+esc(b.phone)+'</span>'+
+            (isHomeLoc(b.location)?'<span>Home: '+esc(b.address||'—')+'</span>':'<span>'+esc(locName(b.location))+'</span>')+
+            (staff?'<span>'+esc(staff.name)+'</span>':'')+
+            '</div>';
+        }).join('') + '</td>';
+      });
+      h += '</tr>';
+    });
+    h += '</tbody></table>';
+    $('printArea').innerHTML = h;
+  }
+
+  /* ---------- MOVE ---------- */
+  var moveState={bk:null,date:null,time:null};
+  var moveToken=0;
+  function openMove(b){
+    moveState={bk:b,date:b.date,time:null};
+    $('moveWho').textContent=b.name+' · now '+S.fmtDate(b.date)+' '+S.fmtTime(b.time);
+    renderMoveDates();
+    $('moveConfirm').disabled=true;
+    $('moveScrim').classList.add('show'); $('moveSheet').classList.add('show');
+  }
+  function closeMove(){ $('moveScrim').classList.remove('show'); $('moveSheet').classList.remove('show'); }
+  $('moveScrim').addEventListener('click',closeMove);
+  $('moveClose').addEventListener('click',closeMove);
+
+  function renderMoveDates(){
+    var b=moveState.bk;
+    var bar=$('moveDateBar'); bar.innerHTML='';
+    var today=new Date();
+    for(var i=0;i<14;i++){
+      var d=S.addDays(today,i); var ds=S.dateStr(d);
+      var open=S.isOpen(b.location,ds);
+      var chip=document.createElement('button'); chip.type='button';
+      chip.className='datechip'+(open?'':' closed')+(ds===moveState.date?' sel':'');
+      chip.innerHTML='<span class="dw">'+S.DAYS[d.getDay()].slice(0,3)+'</span><span class="dn">'+d.getDate()+'</span><span class="dw">'+MONTHS[d.getMonth()]+'</span>';
+      if(open){
+        (function(dsx,chipx){
+          chipx.addEventListener('click',function(){
+            moveState.date=dsx; moveState.time=null;
+            $('moveConfirm').disabled=true;
+            bar.querySelectorAll('.datechip').forEach(function(c){c.classList.remove('sel');});
+            chipx.classList.add('sel');
+            renderMoveGrid();
+          });
+        })(ds,chip);
+      }
+      bar.appendChild(chip);
+    }
+    renderMoveGrid();
+  }
+  function renderMoveGrid(){
+    var b=moveState.bk;
+    var grid=$('moveGrid'); grid.innerHTML='<p class="loading-note">Checking…</p>';
+    if(!moveState.date){ grid.innerHTML=''; return; }
+    var token=++moveToken;
+    Promise.all([S.refreshSettings(), S.takenSet(b.location,moveState.date)]).then(function(r){
+      var taken = r[1];
+      if(token!==moveToken) return;
+      grid.innerHTML='';
+      var ignore=(moveState.date===b.date)?{time:b.time,staffId:b.staffId}:null;
+      var slots=S.slotsWith(b.location,moveState.date,taken,ignore);
+      slots.forEach(function(s){
+        if(s.status==='past') return;
+        var el=document.createElement('button'); el.type='button';
+        var free=s.status==='available';
+        el.className='slot'+(free?'':' booked')+(moveState.time===s.time?' sel':'');
+        el.textContent=S.fmtTime(s.time);
+        if(free){
+          el.addEventListener('click',function(){
+            moveState.time=s.time;
+            grid.querySelectorAll('.slot').forEach(function(x){x.classList.remove('sel');});
+            el.classList.add('sel');
+            $('moveConfirm').disabled=false;
+          });
+        }
+        grid.appendChild(el);
+      });
+      if(!grid.children.length) grid.innerHTML='<p class="empty" style="grid-column:1/-1">No open times this day.</p>';
+    }).catch(function(){
+      if(token!==moveToken) return;
+      grid.innerHTML='<p class="empty" style="grid-column:1/-1">Connection problem — tap the day again.</p>';
+    });
+  }
+  $('moveConfirm').addEventListener('click',function(){
+    S.moveBooking(moveState.bk,moveState.date,moveState.time).then(function(res){
+      if(res.ok){ toast('Moved to '+S.fmtDate(moveState.date)+' at '+S.fmtTime(moveState.time)); closeMove(); refreshAll(); }
+      else if(res.reason==='slot-unavailable') toast('That time is no longer free — pick another.');
+      else toast('Connection problem — try again.');
+    });
+  });
+
+  /* ---------- AVAILABILITY ---------- */
+  var availLoc='holiday-beach';
+  var blockDate=S.todayStr();
+  var blockToken=0;
+
+  function renderLocSeg(){
+    var seg=$('availLocSeg'); seg.innerHTML='';
+    if(!S.settings().locations[availLoc]) availLoc=clinicIds()[0]||homeTherIds()[0];
+    function addBtn(id,label){
+      var b=document.createElement('button'); b.type='button';
+      b.textContent=label; b.setAttribute('data-loc',id);
+      if(id===availLoc) b.classList.add('on');
+      b.addEventListener('click',function(){
+        seg.querySelectorAll('button').forEach(function(x){x.classList.remove('on');});
+        b.classList.add('on');
+        availLoc=id;
+        renderAvail();
+      });
+      seg.appendChild(b);
+    }
+    function addLabel(t){
+      var s=document.createElement('span'); s.className='seglabel'; s.textContent=t; seg.appendChild(s);
+    }
+    addLabel('Clinics');
+    clinicIds().forEach(function(id){ addBtn(id, S.settings().locations[id].name); });
+    var thers=homeTherIds();
+    if(thers.length){
+      addLabel('Home service');
+      thers.forEach(function(id){ addBtn(id, S.settings().locations[id].name); });
+    }
+  }
+
+  /* ---------- SCHEDULE: one repeating shift per weekday ----------
+     Clinics run noon -> as late as 2 AM, so their pickers offer 12 PM
+     through 2 AM (next day). Home therapists keep the full range, including
+     the 24-hour shift and end times above 24:00, which mean "next morning":
+     14:00 -> 28:00 reads as 2 PM until 4 AM. */
+  var MAX_END = 28;               /* 4 AM next day — home service only */
+  var CLINIC_START = 12;          /* clinics never open before noon... */
+  var CLINIC_START_MAX = 23;      /* ...and never open PAST 11 PM the same day */
+  var CLINIC_END = 26;            /* closing can run as late as 2 AM (next day) */
+
+  function toMinutes(t){ var p=String(t).split(':'); return (+p[0])*60+(+p[1]); }
+  function hhmm(h){ return (h<10?'0':'')+h+':00'; }
+
+  function startLabel(t){ return S.fmtTime(t); }
+  function endLabel(t){
+    var h=parseInt(t,10);
+    if(h===24) return 'Midnight';
+    if(h>24) return S.fmtTime(hhmm(h-24))+' (next day)';
+    return S.fmtTime(t);
+  }
+  function shiftText(sh){
+    if(!sh) return 'Closed';
+    if(sh.start==='00:00' && sh.end==='24:00') return 'Open 24 hours';
+    return startLabel(sh.start)+' → '+endLabel(sh.end);
+  }
+  /* The selectable range depends on which location is being edited. */
+  function isClinicEdit(){ return !isHomeLoc(availLoc); }
+  function fillTimeSelect(sel,isEnd,value){
+    sel.innerHTML='';
+    var clinic=isClinicEdit();
+    var from=isEnd?(clinic?CLINIC_START+1:1):(clinic?CLINIC_START:0);
+    var to=isEnd?(clinic?CLINIC_END:MAX_END):(clinic?CLINIC_START_MAX:23);
+    for(var h=from;h<=to;h++){
+      var t=hhmm(h);
+      var o=document.createElement('option');
+      o.value=t; o.textContent=isEnd?endLabel(t):startLabel(t);
+      sel.appendChild(o);
+    }
+    sel.value=value;
+    /* an out-of-range value (say a clinic still left on 24h) snaps to policy */
+    if(sel.selectedIndex===-1) sel.value=isEnd?'24:00':(clinic?hhmm(CLINIC_START):'00:00');
+  }
+
+  /* ---- the usual shift card: the shift shared by all seven days ---- */
+  function sameEveryDay(locId){
+    var first=JSON.stringify(S.weekdayShift(locId,0)||null);
+    for(var d=1;d<7;d++){
+      if(JSON.stringify(S.weekdayShift(locId,d)||null)!==first) return false;
+    }
+    return true;
+  }
+  function renderUsual(){
+    $('usualShiftText').textContent = sameEveryDay(availLoc)
+      ? shiftText(S.weekdayShift(availLoc,0))
+      : 'Varies by day';
+  }
+
+  /* ---- the weekly schedule: one row per weekday, repeating forever ---- */
+  function renderDayList(){
+    var wrap=$('dayList'); wrap.innerHTML='';
+    var todayDow=new Date().getDay();
+    for(var i=0;i<7;i++){
+      (function(){
+        var dow=i;
+        var sh=S.weekdayShift(availLoc,dow);
+        var row=document.createElement('button');
+        row.type='button';
+        row.className='dayrow'+(sh?'':' shut');
+        row.innerHTML=
+          '<span class="dlabel">'+S.DAYS[dow]+(dow===todayDow?'<i>Today</i>':'')+'</span>'+
+          '<span class="dhours">'+shiftText(sh)+'</span>'+
+          '<span class="dtag">Every week</span>';
+        row.addEventListener('click',function(){ openShiftSheet(dow); });
+        wrap.appendChild(row);
+      })();
+    }
+  }
+
+  /* ---- the shift sheet (edits every day at once, or one weekday) ---- */
+  var editingDow=null;    /* null = editing every day at once, otherwise 0-6 */
+
+  var CLINIC_PRESETS=[
+    {label:'12 PM → 12 AM', start:'12:00', end:'24:00'},
+    {label:'12 PM → 1 AM',  start:'12:00', end:'25:00'},
+    {label:'12 PM → 2 AM',  start:'12:00', end:'26:00'},
+    {label:'12 PM → 11 PM', start:'12:00', end:'23:00'},
+    {label:'1 PM → 12 AM',  start:'13:00', end:'24:00'},
+    {label:'2 PM → 12 AM',  start:'14:00', end:'24:00'}
+  ];
+  var HOME_PRESETS=[
+    {label:'Open 24 hours', start:'00:00', end:'24:00'},
+    {label:'12 PM → 12 AM', start:'12:00', end:'24:00'},
+    {label:'2 PM → 4 AM',   start:'14:00', end:'28:00'},
+    {label:'10 AM → 10 PM', start:'10:00', end:'22:00'}
+  ];
+
+  function updatePreview(){
+    var st=$('shiftStart').value, en=$('shiftEnd').value;
+    var p=$('shiftPreview');
+    if(toMinutes(en)<=toMinutes(st)){
+      p.textContent='Closing time must be after the opening time.';
+      return;
+    }
+    var slots=Math.floor((toMinutes(en)-toMinutes(st))/60);
+    var overnight=toMinutes(en)>1440;
+    p.textContent=shiftText({start:st,end:en})+' · '+slots+' appointment'+(slots===1?'':'s')+
+      (overnight?' · runs past midnight':'');
+  }
+
+  function openShiftSheet(dow){
+    /* careful: Sunday is 0, so test against null rather than truthiness */
+    editingDow=(dow===null||dow===undefined)?null:dow;
+    var oneDay=editingDow!==null;
+    var sh=S.weekdayShift(availLoc,oneDay?editingDow:0);
+    var clinic=isClinicEdit();
+    var locName=S.settings().locations[availLoc].name;
+    if(oneDay){
+      $('shiftTitle').textContent=S.DAYS[editingDow];
+      $('shiftSub').textContent=locName+' · every '+S.DAYS[editingDow];
+      $('shiftClosed').style.display='flex';
+    } else {
+      $('shiftTitle').textContent='Usual shift';
+      $('shiftSub').textContent=locName+' · applies to every day';
+      $('shiftClosed').style.display='none';
+    }
+    fillTimeSelect($('shiftStart'),false,sh?sh.start:(clinic?'12:00':'00:00'));
+    fillTimeSelect($('shiftEnd'),true,sh?sh.end:'24:00');
+
+    var pw=$('shiftPresets'); pw.innerHTML='';
+    (clinic?CLINIC_PRESETS:HOME_PRESETS).forEach(function(pr){
+      var b=document.createElement('button'); b.type='button'; b.textContent=pr.label;
+      b.addEventListener('click',function(){
+        $('shiftStart').value=pr.start; $('shiftEnd').value=pr.end; updatePreview();
+      });
+      pw.appendChild(b);
+    });
+
+    updatePreview();
+    $('shiftScrim').classList.add('show'); $('shiftSheet').classList.add('show');
+  }
+  function closeShiftSheet(){
+    $('shiftScrim').classList.remove('show');
+    $('shiftSheet').classList.remove('show');
+  }
+  $('shiftClose').addEventListener('click',closeShiftSheet);
+  $('shiftScrim').addEventListener('click',closeShiftSheet);
+  $('usualShiftBtn').addEventListener('click',function(){ openShiftSheet(null); });
+  $('shiftStart').addEventListener('change',updatePreview);
+  $('shiftEnd').addEventListener('change',updatePreview);
+
+  function afterScheduleSave(msg){
+    return function(res){
+      if(res.ok){ toast(msg); renderUsual(); renderDayList(); renderBlock(); closeShiftSheet(); }
+      else toast('Could not save — check connection');
+    };
+  }
+
+  $('shiftSave').addEventListener('click',function(){
+    var st=$('shiftStart').value, en=$('shiftEnd').value;
+    if(toMinutes(en)<=toMinutes(st)){ toast('Closing time must be after the opening time'); return; }
+    if(toMinutes(en)-toMinutes(st)>1440){ toast('A shift cannot be longer than 24 hours'); return; }
+    var shift={start:st,end:en};
+    if(editingDow!==null) S.setWeekdayShift(availLoc,editingDow,shift).then(afterScheduleSave('Every '+S.DAYS[editingDow]+' updated'));
+    else S.setUsualShift(availLoc,shift).then(afterScheduleSave('Every day updated'));
+  });
+
+  $('shiftClosed').addEventListener('click',function(){
+    if(editingDow===null) return;
+    S.setWeekdayShift(availLoc,editingDow,null).then(afterScheduleSave('Closed every '+S.DAYS[editingDow]));
+  });
+
+  function renderBlockDates(){
+    var bar=$('blockDateBar'); bar.innerHTML='';
+    var today=new Date();
+    for(var i=0;i<14;i++){
+      var d=S.addDays(today,i); var ds=S.dateStr(d);
+      var chip=document.createElement('button'); chip.type='button';
+      chip.className='datechip'+(ds===blockDate?' sel':'');
+      chip.innerHTML='<span class="dw">'+S.DAYS[d.getDay()].slice(0,3)+'</span><span class="dn">'+d.getDate()+'</span><span class="dw">'+MONTHS[d.getMonth()]+'</span>';
+      (function(dsx,chipx){
+        chipx.addEventListener('click',function(){
+          blockDate=dsx;
+          bar.querySelectorAll('.datechip').forEach(function(c){c.classList.remove('sel');});
+          chipx.classList.add('sel');
+          renderBlock();
+        });
+      })(ds,chip);
+      bar.appendChild(chip);
+    }
+  }
+
+  function renderBlock(){
+    var grid=$('blockGrid'); grid.innerHTML='<p class="loading-note">Checking…</p>';
+    var dayBlocked=S.isDayBlocked(availLoc,blockDate);
+    $('blockDayBtn').textContent=dayBlocked?'Unblock this day':'Block entire day';
+    var token=++blockToken;
+    Promise.all([S.refreshSettings(), S.takenSet(availLoc,blockDate)]).then(function(r){
+      var taken = r[1];
+      var dayBlocked2=S.isDayBlocked(availLoc,blockDate);
+      $('blockDayBtn').textContent=dayBlocked2?'Unblock this day':'Block entire day';
+      if(token!==blockToken) return;
+      grid.innerHTML='';
+      var slots=S.slotsWith(availLoc,blockDate,taken);
+      if(!slots.length){
+        grid.innerHTML='<p class="empty" style="grid-column:1/-1">Closed this weekday — open it in weekly hours above.</p>';
+        return;
+      }
+      slots.forEach(function(s){
+        var el=document.createElement('button'); el.type='button';
+        var cls='slot'; var label='Open';
+        if(s.status==='taken'){ cls+=' booked'; label='Booked'; }
+        else if(s.status==='blocked'){ cls+=' blocked'; label='Blocked'; }
+        else if(s.status==='past'){ cls+=' booked'; label='Past'; }
+        el.className=cls;
+        el.innerHTML=S.fmtTime(s.time)+'<small>'+label+'</small>';
+        if((s.status==='blocked'&&!dayBlocked)||s.status==='available'){
+          el.addEventListener('click',function(){
+            S.toggleBlock(availLoc,blockDate,s.time).then(function(res){
+              if(res.ok) renderBlock();
+              else toast('Could not save — check connection');
+            });
+          });
+        }
+        grid.appendChild(el);
+      });
+    }).catch(function(){
+      if(token!==blockToken) return;
+      grid.innerHTML='<p class="empty" style="grid-column:1/-1">Connection problem — tap the day again.</p>';
+    });
+  }
+  $('blockDayBtn').addEventListener('click',function(){
+    S.toggleBlock(availLoc,blockDate,'ALL').then(function(res){
+      if(res.ok){ renderBlock(); toast(S.isDayBlocked(availLoc,blockDate)?'Day blocked':'Day reopened'); }
+      else toast('Could not save — check connection');
+    });
+  });
+
+  function renderAvail(){
+    $('staffedNote').style.display=S.isStaffedLocation(availLoc)?'block':'none';
+    renderUsual(); renderDayList(); renderBlockDates(); renderBlock();
+  }
+
+  /* ---------- SETTINGS: THERAPIST & RITUAL EDITORS ---------- */
+  function armRemove(btn, label, onConfirm){
+    if(btn.classList.contains('confirm')){ onConfirm(); return; }
+    btn.classList.add('confirm'); btn.textContent='Tap again to remove';
+    setTimeout(function(){ btn.classList.remove('confirm'); btn.textContent=label; },2800);
+  }
+  function afterSettingsChange(){
+    renderTherList(); renderSvcList(); renderStaffList();
+    renderFilterOptions(); renderCalLocOptions(); renderLocSeg();
+    renderBookings(); renderCalendar(); renderAvail();
+  }
+  function pushAnd(msg){
+    return S.pushSettings().then(function(res){
+      if(res.ok){ toast(msg); afterSettingsChange(); return true; }
+      toast('Could not save — check connection');
+      return false;
+    });
+  }
+
+  /* --- therapists --- */
+  var editingTher=null;   /* location id, or null = adding new */
+  var therPhotoData='';
+
+  function renderTherList(){
+    var wrap=$('therList'); wrap.innerHTML='';
+    var ids=homeTherIds();
+    if(!ids.length){
+      wrap.innerHTML='<p class="empty">No home therapists yet — add your first one below.</p>';
+      return;
+    }
+    ids.forEach(function(id,i){
+      var t=S.settings().locations[id];
+      var row=document.createElement('button'); row.type='button'; row.className='prow';
+      row.innerHTML=
+        '<span class="pimg"><img src="'+((t.photo)||avatarFor(t.name,i))+'" alt=""></span>'+
+        '<span class="ptxt"><b>'+esc(t.name||'Therapist')+'</b><small>'+esc(t.spec||'Home service')+'</small></span>'+
+        '<span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>';
+      row.addEventListener('click',function(){ openTherSheet(id); });
+      wrap.appendChild(row);
+    });
+  }
+
+  function openTherSheet(id){
+    editingTher=id;
+    var t=id?S.settings().locations[id]:null;
+    $('therTitle').textContent=id?'Edit therapist':'New therapist';
+    $('therName').value=t?(t.name||''):'';
+    $('therSpec').value=t?(t.spec||''):'';
+    $('therDesc').value=t?(t.desc||''):'';
+    therPhotoData=t?(t.photo||''):'';
+    $('therPhotoPreview').src=therPhotoData||avatarFor(t?t.name:'?',0);
+    $('therRemove').style.display=id?'flex':'none';
+    $('therRemove').classList.remove('confirm'); $('therRemove').textContent='Remove therapist';
+    $('editScrim').classList.add('show'); $('therSheet').classList.add('show');
+  }
+  function closeSheets(){
+    $('editScrim').classList.remove('show');
+    $('therSheet').classList.remove('show');
+    $('svcSheet').classList.remove('show');
+    $('staffSheet').classList.remove('show');
+    $('staffDaySheet').classList.remove('show');
+  }
+  $('therClose').addEventListener('click',closeSheets);
+  $('editScrim').addEventListener('click',closeSheets);
+  $('therAddBtn').addEventListener('click',function(){ openTherSheet(null); });
+
+  /* photo picking: center-crop to a square (biased upward for portraits),
+     resized to 320px and stored as a compact JPEG in settings */
+  $('therPhotoBtn').addEventListener('click',function(){ $('therPhotoFile').click(); });
+  $('therPhotoFile').addEventListener('change',function(){
+    var f=this.files&&this.files[0];
+    this.value='';
+    if(!f) return;
+    var img=new Image();
+    img.onload=function(){
+      var side=Math.min(img.width,img.height);
+      var sx=(img.width-side)/2;
+      var sy=(img.height-side)*(img.height>img.width?0.25:0.5);
+      var c=document.createElement('canvas'); c.width=c.height=320;
+      c.getContext('2d').drawImage(img,sx,sy,side,side,0,0,320,320);
+      therPhotoData=c.toDataURL('image/jpeg',0.85);
+      $('therPhotoPreview').src=therPhotoData;
+      URL.revokeObjectURL(img.src);
+    };
+    img.onerror=function(){ toast('Could not read that image — try another'); };
+    img.src=URL.createObjectURL(f);
+  });
+
+  $('therSave').addEventListener('click',function(){
+    var name=$('therName').value.trim();
+    if(!name){ toast('Please enter a name'); $('therName').focus(); return; }
+    var locs=S.settings().locations;
+    if(editingTher){
+      var t=locs[editingTher];
+      t.name=name;
+      t.spec=$('therSpec').value.trim();
+      t.desc=$('therDesc').value.trim();
+      t.photo=therPhotoData;
+    } else {
+      var id='home-'+Date.now().toString(36);
+      var maxOrd=0;
+      homeTherIds().forEach(function(k){ maxOrd=Math.max(maxOrd,therapistOrd(k)); });
+      locs[id]={ name:name, spec:$('therSpec').value.trim(), desc:$('therDesc').value.trim(),
+                 photo:therPhotoData, area:'Home service', home:true, ord:maxOrd+1, hours:defHours() };
+    }
+    pushAnd(editingTher?'Therapist updated':'Therapist added').then(function(ok){ if(ok) closeSheets(); });
+  });
+
+  $('therRemove').addEventListener('click',function(){
+    var btn=$('therRemove');
+    armRemove(btn,'Remove therapist',function(){
+      delete S.settings().locations[editingTher];
+      pushAnd('Therapist removed').then(function(ok){ if(ok) closeSheets(); });
+    });
+  });
+
+  /* --- rituals --- */
+  var editingSvc=null;   /* service id, or null = adding new */
+
+  function renderSvcList(){
+    var wrap=$('svcList'); wrap.innerHTML='';
+    var list=S.settings().services||[];
+    if(!list.length){
+      wrap.innerHTML='<p class="empty">No rituals yet — add your first one below.</p>';
+      return;
+    }
+    list.forEach(function(sv){
+      var row=document.createElement('button'); row.type='button'; row.className='prow';
+      row.innerHTML=
+        '<span class="ptxt"><b>'+esc(sv.name)+'</b></span>'+
+        '<span class="pmeta">'+sv.minutes+' min</span>'+
+        '<span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>';
+      row.addEventListener('click',function(){ openSvcSheet(sv.id); });
+      wrap.appendChild(row);
+    });
+  }
+
+  function svcById(id){
+    var list=S.settings().services||[];
+    for(var i=0;i<list.length;i++) if(list[i].id===id) return list[i];
+    return null;
+  }
+  function openSvcSheet(id){
+    editingSvc=id;
+    var sv=id?svcById(id):null;
+    $('svcTitle').textContent=id?'Edit ritual':'New ritual';
+    $('svcName').value=sv?sv.name:'';
+    var msel=$('svcMinutes'); msel.innerHTML='';
+    for(var m=15;m<=180;m+=15){
+      var o=document.createElement('option'); o.value=m; o.textContent=m+' minutes';
+      msel.appendChild(o);
+    }
+    msel.value=sv?sv.minutes:60;
+    if(msel.selectedIndex===-1) msel.value=60;
+    $('svcRemove').style.display=id?'flex':'none';
+    $('svcRemove').classList.remove('confirm'); $('svcRemove').textContent='Remove ritual';
+    $('editScrim').classList.add('show'); $('svcSheet').classList.add('show');
+  }
+  $('svcClose').addEventListener('click',closeSheets);
+  $('svcAddBtn').addEventListener('click',function(){ openSvcSheet(null); });
+
+  $('svcSave').addEventListener('click',function(){
+    var name=$('svcName').value.trim();
+    if(!name){ toast('Please enter a name'); $('svcName').focus(); return; }
+    var minutes=parseInt($('svcMinutes').value,10)||60;
+    if(editingSvc){
+      var sv=svcById(editingSvc);
+      if(sv){ sv.name=name; sv.minutes=minutes; }
+    } else {
+      var id=name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'ritual';
+      while(svcById(id)) id+='-2';
+      S.settings().services.push({ id:id, name:name, minutes:minutes });
+    }
+    pushAnd(editingSvc?'Ritual updated':'Ritual added').then(function(ok){ if(ok) closeSheets(); });
+  });
+
+  $('svcRemove').addEventListener('click',function(){
+    var btn=$('svcRemove');
+    armRemove(btn,'Remove ritual',function(){
+      var list=S.settings().services;
+      for(var i=0;i<list.length;i++) if(list[i].id===editingSvc){ list.splice(i,1); break; }
+      pushAnd('Ritual removed').then(function(ok){ if(ok) closeSheets(); });
+    });
+  });
+
+  /* --- clinic staff (multi-therapist capacity) --- */
+  var editingStaffId=null;   /* staff id, or null = adding new */
+  var editingStaffDow=null;
+
+  function renderStaffList(){
+    var wrap=$('staffList'); wrap.innerHTML='';
+    var list=S.staffList();
+    if(!list.length){
+      wrap.innerHTML='<p class="empty">No clinic staff yet — add your first therapist below.</p>';
+      return;
+    }
+    list.forEach(function(s){
+      var days=0; for(var d=0;d<7;d++) if(s.schedule&&s.schedule[String(d)]) days++;
+      var row=document.createElement('button'); row.type='button'; row.className='prow';
+      row.innerHTML=
+        '<span class="ptxt"><b>'+esc(s.name)+'</b><small>'+(days?days+' day'+(days===1?'':'s')+' a week':'No schedule set yet')+'</small></span>'+
+        '<span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></span>';
+      row.addEventListener('click',function(){ openStaffSheet(s.id); });
+      wrap.appendChild(row);
+    });
+  }
+
+  function staffDayText(sh){
+    if(!sh) return 'Off';
+    return locName(sh.clinic)+' · '+startLabel(sh.start)+' → '+endLabel(sh.end);
+  }
+
+  function renderStaffDayList(){
+    var wrap=$('staffDayList'); wrap.innerHTML='';
+    if(!editingStaffId){
+      wrap.innerHTML='<p class="empty">Save this therapist first to unlock their weekly schedule.</p>';
+      return;
+    }
+    var s=S.staffById(editingStaffId);
+    if(!s) return;
+    var todayDow=new Date().getDay();
+    for(var i=0;i<7;i++){
+      (function(){
+        var dow=i;
+        var sh=s.schedule&&s.schedule[String(dow)];
+        var row=document.createElement('button'); row.type='button';
+        row.className='dayrow'+(sh?'':' shut');
+        row.innerHTML=
+          '<span class="dlabel">'+S.DAYS[dow]+(dow===todayDow?'<i>Today</i>':'')+'</span>'+
+          '<span class="dhours">'+staffDayText(sh)+'</span>'+
+          '<span class="dtag">Every week</span>';
+        row.addEventListener('click',function(){ openStaffDaySheet(dow); });
+        wrap.appendChild(row);
+      })();
+    }
+  }
+
+  function openStaffSheet(id){
+    editingStaffId=id;
+    var s=id?S.staffById(id):null;
+    $('staffTitle').textContent=id?'Edit therapist':'New therapist';
+    $('staffName').value=s?s.name:'';
+    $('staffRemove').style.display=id?'flex':'none';
+    $('staffRemove').classList.remove('confirm'); $('staffRemove').textContent='Remove therapist';
+    renderStaffDayList();
+    $('editScrim').classList.add('show'); $('staffSheet').classList.add('show');
+  }
+  $('staffClose').addEventListener('click',closeSheets);
+  $('staffAddBtn').addEventListener('click',function(){ openStaffSheet(null); });
+
+  $('staffSave').addEventListener('click',function(){
+    var name=$('staffName').value.trim();
+    if(!name){ toast('Please enter a name'); $('staffName').focus(); return; }
+    if(editingStaffId){
+      S.renameStaff(editingStaffId,name).then(function(res){
+        if(res.ok){ toast('Therapist updated'); afterSettingsChange(); }
+        else toast('Could not save — check connection');
+      });
+    } else {
+      S.addStaff(name).then(function(res){
+        if(res.ok){ toast('Therapist added — now set their schedule below'); afterSettingsChange(); openStaffSheet(res.staff.id); }
+        else toast('Could not save — check connection');
+      });
+    }
+  });
+
+  $('staffRemove').addEventListener('click',function(){
+    var btn=$('staffRemove');
+    armRemove(btn,'Remove therapist',function(){
+      S.removeStaff(editingStaffId).then(function(res){
+        if(res.ok){ toast('Therapist removed'); afterSettingsChange(); closeSheets(); }
+        else toast('Could not save — check connection');
+      });
+    });
+  });
+
+  /* one weekday for one therapist: which clinic (bounded to the same
+     noon–2 AM policy as clinic hours) and what hours */
+  function fillStaffTimeSelect(sel,isEnd,value){
+    sel.innerHTML='';
+    var from=isEnd?CLINIC_START+1:CLINIC_START;
+    var to=isEnd?CLINIC_END:CLINIC_START_MAX;
+    for(var h=from;h<=to;h++){
+      var t=hhmm(h);
+      var o=document.createElement('option');
+      o.value=t; o.textContent=isEnd?endLabel(t):startLabel(t);
+      sel.appendChild(o);
+    }
+    sel.value=value;
+    if(sel.selectedIndex===-1) sel.value=isEnd?'24:00':hhmm(CLINIC_START);
+  }
+  function updateStaffDayPreview(){
+    var st=$('staffDayStart').value, en=$('staffDayEnd').value;
+    var p=$('staffDayPreview');
+    if(toMinutes(en)<=toMinutes(st)){ p.textContent='Closing time must be after the opening time.'; return; }
+    var clinic=$('staffDayClinic').value;
+    p.textContent=(S.settings().locations[clinic]?locName(clinic):'')+' · '+startLabel(st)+' → '+endLabel(en);
+  }
+  function openStaffDaySheet(dow){
+    editingStaffDow=dow;
+    var s=S.staffById(editingStaffId);
+    var sh=s&&s.schedule&&s.schedule[String(dow)];
+    $('staffDayTitle').textContent=S.DAYS[dow];
+    $('staffDaySub').textContent=(s?s.name:'')+' · every '+S.DAYS[dow];
+    var ids=clinicIds();
+    var csel=$('staffDayClinic'); csel.innerHTML='';
+    ids.forEach(function(id){
+      var o=document.createElement('option'); o.value=id; o.textContent=S.settings().locations[id].name;
+      csel.appendChild(o);
+    });
+    csel.value=sh?sh.clinic:(ids[0]||'');
+    if(csel.selectedIndex===-1 && ids.length) csel.selectedIndex=0;
+    fillStaffTimeSelect($('staffDayStart'),false,sh?sh.start:hhmm(CLINIC_START));
+    fillStaffTimeSelect($('staffDayEnd'),true,sh?sh.end:'20:00');
+    updateStaffDayPreview();
+    $('staffDayOff').style.display=sh?'flex':'none';
+    closeSheets();
+    $('editScrim').classList.add('show'); $('staffDaySheet').classList.add('show');
+  }
+  $('staffDayClose').addEventListener('click',function(){ closeSheets(); openStaffSheet(editingStaffId); });
+  $('staffDayClinic').addEventListener('change',updateStaffDayPreview);
+  $('staffDayStart').addEventListener('change',updateStaffDayPreview);
+  $('staffDayEnd').addEventListener('change',updateStaffDayPreview);
+
+  $('staffDaySave').addEventListener('click',function(){
+    var st=$('staffDayStart').value, en=$('staffDayEnd').value;
+    if(toMinutes(en)<=toMinutes(st)){ toast('Closing time must be after the opening time'); return; }
+    var clinic=$('staffDayClinic').value;
+    if(!clinic){ toast('Add a clinic first'); return; }
+    S.setStaffDay(editingStaffId,editingStaffDow,{clinic:clinic,start:st,end:en}).then(function(res){
+      if(res.ok){ toast(S.DAYS[editingStaffDow]+' updated'); afterSettingsChange(); closeSheets(); openStaffSheet(editingStaffId); }
+      else toast('Could not save — check connection');
+    });
+  });
+  $('staffDayOff').addEventListener('click',function(){
+    S.setStaffDay(editingStaffId,editingStaffDow,null).then(function(res){
+      if(res.ok){ toast('Off '+S.DAYS[editingStaffDow]); afterSettingsChange(); closeSheets(); openStaffSheet(editingStaffId); }
+      else toast('Could not save — check connection');
+    });
+  });
+
+  /* ---------- SETTINGS ---------- */
+  $('exportBtn').addEventListener('click',function(){
+    var payload={ settings:S.settings(), bookings:bookings, exportedAt:new Date().toISOString() };
+    var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='azur-backup-'+S.todayStr()+'.json';
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },400);
+    toast('Backup downloaded');
+  });
+  $('lockBtn').addEventListener('click',function(){
+    S.logout().then(function(){
+      gate.style.display='flex'; gate.classList.remove('bad');
+      $('gatePass').value='';
+    });
+  });
+
+  function refreshAll(){
+    S.refreshSettings().then(function(){
+      return S.listBookings();
+    }).then(function(list){
+      bookings=list;
+      renderFilterOptions();
+      renderCalLocOptions();
+      renderLocSeg();
+      statLine();
+      renderBookings();
+      renderCalendar();
+      renderAvail();
+      renderTherList();
+      renderSvcList();
+      renderStaffList();
+    }).catch(function(){
+      toast('Could not load bookings — check connection');
+    });
+  }
+})();
+</script>
+</body>
+</html>
